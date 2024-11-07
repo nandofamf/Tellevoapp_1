@@ -1,0 +1,48 @@
+.input-item {
+  margin-bottom: 15px; /* Espaciado entre campos de entrada */
+}
+
+.suggestions-list {
+  margin-top: -10px; /* Reduce el espacio entre el input y la lista de sugerencias */
+  margin-bottom: 15px; /* Añade espacio después de la lista */
+}
+
+.create-button {
+  margin-top: 20px; /* Añade espacio antes del botón */
+  margin-bottom: 20px; /* Añade espacio después del botón */
+  --background: #28a745; /* Color verde para el fondo del botón */
+  color: #ffffff !important; /* Texto blanco */
+  font-weight: bold; /* Texto negrita */
+}
+
+.map-container {
+  height: 50vh; /* Mapa más grande y responsivo */
+  border-radius: 10px; /* Bordes redondeados para el mapa */
+  overflow: hidden; /* Asegura que el contenido no se desborde */
+  margin-bottom: 20px; /* Espaciado adicional al final */
+}
+
+ion-label {
+  color: #ffffff !important; /* Texto blanco para las etiquetas */
+  font-weight: bold; /* Negrita para mejorar la legibilidad */
+}
+
+ion-input {
+  color: #ffffff !important; /* Texto blanco para los inputs */
+}
+
+ion-input::placeholder {
+  color: #aaaaaa !important; /* Color gris claro para el placeholder */
+  font-weight: 400; /* Peso de fuente para el placeholder */
+}
+
+ion-note {
+  font-size: 12px;
+  margin-top: 5px;
+  color: #ff6666 !important; /* Color rojo para las notas de error */
+}
+
+ion-title {
+  color: #ffffff !important; /* Color blanco para el título */
+  font-weight: bold; /* Negrita en el título */
+}

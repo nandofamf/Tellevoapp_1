@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar style="--background: #6c757d; color: #ffffff;">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/role-selection" style="color: #ffffff;"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="color: #ffffff;">Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="custom-background">
+  <div class="profile-container">
+    <div class="profile-avatar" (click)="seleccionarImagen()">
+      <img *ngIf="imagenPerfil" [src]="imagenPerfil" alt="Profile Image" />
+      <ion-icon *ngIf="!imagenPerfil" name="person-outline" class="profile-icon"></ion-icon>
+    </div>
+    <ion-button fill="outline" (click)="seleccionarImagen()">
+      <ion-icon name="camera-outline" slot="start"></ion-icon>
+      Cambiar Imagen
+    </ion-button>
+
+    <h2 class="profile-name">{{ usuario.username }}</h2>
+    <p class="profile-email">{{ usuario.email }}</p>
+    <p class="profile-phone">Teléfono: {{ usuario.telefono }}</p>
+
+    <ion-button expand="block" color="success" class="edit-button" (click)="editarPerfil()">
+      <ion-icon name="create-outline" slot="start"></ion-icon>
+      Editar Perfil
+    </ion-button>
+
+    <ion-button expand="block" color="warning" class="change-password-button" (click)="cambiarContrasena()">
+      <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+      Cambiar Contraseña
+    </ion-button>
+
+    <ion-button expand="block" color="danger" class="logout-button" (click)="cerrarSesion()">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      Cerrar Sesión
+    </ion-button>
+  </div>
+</ion-content>

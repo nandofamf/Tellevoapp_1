@@ -1,0 +1,49 @@
+<ion-content class="ion-padding" color="dark">
+  <div class="form-slide" style="text-align: center;">
+    <img src="assets/logo.png" alt="DriverMe Logo" class="logo-image" />
+
+    <h3 class="title">Ingresa tu Correo Electrónico y Contraseña</h3>
+    <form #formulario="ngForm" (ngSubmit)="onLoginSubmit()">
+      
+      <!-- Campo para el Correo Electrónico -->
+      <ion-item class="custom-item" lines="none">
+        <ion-icon name="mail" slot="start"></ion-icon>
+        <ion-label position="stacked">Correo Electrónico</ion-label>
+        <ion-input
+          required
+          type="email"
+          [(ngModel)]="usr.email"
+          name="email"
+          placeholder="ejemplo@correo.com"> 
+        </ion-input>
+      </ion-item>
+
+      <!-- Campo para la Contraseña -->
+      <ion-item class="custom-item" lines="none">
+        <ion-icon name="lock-closed" slot="start"></ion-icon>
+        <ion-label position="stacked">Contraseña</ion-label>
+        <ion-input
+          required
+          type="password"
+          [(ngModel)]="usr.password"
+          name="password"
+          placeholder="Contraseña">
+        </ion-input>
+      </ion-item>
+
+      <!-- Botón de Ingresar -->
+      <ion-button 
+        expand="block" 
+        color="primary" 
+        type="submit" 
+        [disabled]="formulario.invalid">
+        Ingresar
+      </ion-button>
+    </form>
+
+    <!-- Enlace para Registro -->
+    <ion-item lines="none" button (click)="navigateToRegister()" style="text-align: center; margin-top: 16px;">
+      <p>¿No tienes una cuenta? <strong>Regístrate aquí</strong></p>
+    </ion-item>
+  </div>
+</ion-content>

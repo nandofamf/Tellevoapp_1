@@ -1,0 +1,89 @@
+/* Fondo degradado para el contenido */
+ion-content {
+  --ion-background-color: transparent;
+  background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
+}
+
+/* Lista de viajes */
+ion-list {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto; /* Centra la lista */
+  padding: 10px;
+}
+
+/* Estilo para cada item de viaje */
+ion-item {
+  background: #4a4a4a; /* Fondo gris para el item */
+  color: #ffffff;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Título y detalles de viaje */
+ion-label h2 {
+  font-size: 1.2rem;
+  color: #81c784; /* Verde claro para el título */
+  margin-bottom: 8px;
+}
+
+ion-label p {
+  font-size: 1rem;
+  color: #ffffff;
+  opacity: 0.8;
+  margin: 4px 0;
+}
+
+/* Botón de 'Tomar' */
+ion-button {
+  font-size: 1.2rem;
+  border-radius: 10px;
+  color: #fff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &[fill="outline"] {
+    background: #2e2e2e;
+    border-color: #81c784; /* Color verde para el borde */
+    color: #81c784;
+  }
+
+  &:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  &:active {
+    transform: scale(0.96);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Mensaje de 'No hay viajes disponibles' */
+.empty-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #b0b0b0; /* Color gris claro */
+  height: 100%;
+  text-align: center;
+  padding: 20px;
+  opacity: 0.8;
+}
+
+/* Estilos para el mapa */
+#mapId {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  margin-top: 10px;
+}

@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/conductor"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Crear Viaje</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item class="input-item">
+    <ion-label position="floating">Dirección de Partida</ion-label>
+    <ion-input 
+      [(ngModel)]="direccionPartidaInput" 
+      (ionInput)="buscarLugar('partida', $event)" 
+      placeholder="">
+    </ion-input>
+  </ion-item>
+
+  <ion-list *ngIf="lugaresPartida.length > 0" class="suggestions-list">
+    <ion-item *ngFor="let lugar of lugaresPartida" (click)="seleccionarLugar('partida', lugar)">
+      {{ lugar.place_name }}
+    </ion-item>
+  </ion-list>
+
+  <ion-item class="input-item">
+    <ion-label position="floating">Dirección de Destino</ion-label>
+    <ion-input 
+      [(ngModel)]="direccionDestinoInput" 
+      (ionInput)="buscarLugar('destino', $event)" 
+      placeholder="">
+    </ion-input>
+  </ion-item>
+
+  <ion-list *ngIf="lugaresDestino.length > 0" class="suggestions-list">
+    <ion-item *ngFor="let lugar of lugaresDestino" (click)="seleccionarLugar('destino', lugar)">
+      {{ lugar.place_name }}
+    </ion-item>
+  </ion-list>
+
+  <ion-item class="input-item">
+    <ion-label position="floating">Capacidad del Auto</ion-label>
+    <ion-input 
+      [(ngModel)]="capacidad" 
+      type="number" 
+      placeholder="Número de asientos">
+    </ion-input>
+  </ion-item>
+
+  <ion-item class="input-item">
+    <ion-label position="floating" color="danger">Valor por Asiento</ion-label>
+    <ion-input 
+      [(ngModel)]="costo" 
+      type="number" 
+      required 
+      placeholder="Costo por asiento">
+    </ion-input>
+    <ion-note slot="helper" color="danger" *ngIf="!costo">Este campo es obligatorio</ion-note>
+  </ion-item>
+
+  <ion-item class="input-item">
+    <ion-label position="floating">Patente del Auto</ion-label>
+    <ion-input 
+      [(ngModel)]="patente" 
+      (ionInput)="convertirMayusculas($event)" 
+      required 
+      placeholder="">
+    </ion-input>
+    <ion-note slot="helper" color="danger" *ngIf="!patente">Este campo es obligatorio</ion-note>
+  </ion-item>
+
+  <ion-item class="input-item">
+    <ion-label position="floating">Modelo del Auto</ion-label>
+    <ion-input 
+      [(ngModel)]="modelo" 
+      required 
+      placeholder="">
+    </ion-input>
+    <ion-note slot="helper" color="danger" *ngIf="!modelo">Este campo es obligatorio</ion-note>
+  </ion-item>
+
+  <ion-button expand="block" color="success" (click)="crearViaje()" class="create-button">Crear Viaje</ion-button>
+
+  <div id="map-crear-viaje" style="width: 100%; height: 50vh; margin-top: 10px;"></div>
+</ion-content>

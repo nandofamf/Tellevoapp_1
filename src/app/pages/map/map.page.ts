@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import * as mapboxgl from 'mapbox-gl';
-import { GeocodingService } from '../../services/geocoding.service';
+import mapboxgl from 'mapbox-gl';
+import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -15,128 +15,90 @@ export class MapPage implements OnInit {
   viajeId: string = '';
   direccionPartida: string = '';
   direccionDestino: string = '';
-  precioAsiento: number = 0;
-  pasajeroId: string = 'pasajero123'; 
-  patente: string = '';// Obtén este ID dinámicamente
+  precioAsiento: number | null = null;
+  patente: string = '';
+  partidaCoords: [number, number] | null = null;
+  destinoCoords: [number, number] | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private db: AngularFireDatabase,
-    private geocodingService: GeocodingService,
     private toastController: ToastController,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      this.viajeId = params['viajeId'] || '';
+      this.viajeId = params['viajeId'];
       if (this.viajeId) {
-        this.cargarViaje(); // Llamada a cargarViaje en ngOnInit
+        this.cargarDatosDelViaje(this.viajeId);
       }
+    });
+    this.initializeMap();
+  }
+
+  initializeMap() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const userCoords: [number, number] = [
+        position.coords.longitude,
+        position.coords.latitude,
+      ];
+
+      mapboxgl.accessToken = environment.mapbox.accessToken;
+
+      this.map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: userCoords,
+        zoom: 13,
+      });
+
+      this.map.on('load', () => {
+        if (this.partidaCoords && this.destinoCoords) {
+          this.mostrarRuta(this.partidaCoords, this.destinoCoords);
+        }
+      });
     });
   }
 
-  async cargarViaje() {
-    this.db.object(`viajes/${this.viajeId}`).valueChanges().subscribe(async (viaje: any) => {
-      if (viaje && viaje.direccionPartida && viaje.direccionDestino) {
-        this.direccionPartida = viaje.direccionPartida;
-        this.direccionDestino = viaje.direccionDestino;
-        this.precioAsiento = viaje.precioAsiento || 0;
+  cargarDatosDelViaje(viajeId: string) {
+    this.db.object(`viajes/${viajeId}`).valueChanges().subscribe((viaje: any) => {
+      if (viaje) {
+        this.direccionPartida = viaje.direccionPartida || 'No disponible';
+        this.direccionDestino = viaje.direccionDestino || 'No disponible';
+        this.precioAsiento = viaje.precio || null;
         this.patente = viaje.patente || 'No disponible';
+        this.partidaCoords = [viaje.lngPartida, viaje.latPartida];
+        this.destinoCoords = [viaje.lngDestino, viaje.latDestino];
 
-        try {
-          const coordsPartida = await this.geocodingService.getCoordinates(this.direccionPartida).toPromise();
-          const coordsDestino = await this.geocodingService.getCoordinates(this.direccionDestino).toPromise();
-
-          if (coordsPartida && coordsDestino) {
-            const route = await this.geocodingService.getRoute(coordsPartida, coordsDestino);
-            if (route) {
-              this.cargarMapa(coordsPartida, coordsDestino, route);
-            } else {
-              console.error('No se pudo obtener la ruta. Verifique las direcciones.');
-            }
-          }
-        } catch (error) {
-          console.error('Error al obtener las coordenadas o la ruta:', error);
+        if (this.map && this.map.loaded()) {
+          this.mostrarRuta(this.partidaCoords, this.destinoCoords);
         }
-      } else {
-        console.error('Datos del viaje incompletos. No se puede cargar el mapa.');
       }
     });
   }
 
-  cargarMapa(start: [number, number], end: [number, number], route: [number, number][]) {
-    (mapboxgl as any).accessToken = 'pk.eyJ1IjoibmFuZG9mYW1mIiwiYSI6ImNtM2JzamNjNDB4cGYyanBzYzZudTlyMmwifQ.wLGsjrc2Nsp0jk7G3blyjA';
+  mostrarRuta(partida: [number, number], destino: [number, number]) {
+    if (!this.map) {
+      console.error('Map is not initialized.');
+      return;
+    }
 
-    this.map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: start,
-      zoom: 12
-    });
+    this.map.flyTo({ center: partida, zoom: 12 });
+    new mapboxgl.Marker().setLngLat(partida).addTo(this.map);
+    new mapboxgl.Marker().setLngLat(destino).addTo(this.map);
 
-    this.map.on('load', () => {
-      this.map.addSource('route', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          geometry: {
-            type: 'LineString',
-            coordinates: route
-          },
-          properties: {}
-        }
-      });
-
-      this.map.addLayer({
-        id: 'route',
-        type: 'line',
-        source: 'route',
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        paint: {
-          'line-color': '#1db7dd',
-          'line-width': 6
-        }
-      });
-
-      // Marcadores de inicio y destino
-      new mapboxgl.Marker({ color: 'green' }).setLngLat(start).addTo(this.map);
-      new mapboxgl.Marker({ color: 'red' }).setLngLat(end).addTo(this.map);
-    });
+    // Lógica para dibujar la ruta en el mapa si es necesario
   }
 
   async cancelarViaje() {
-    try {
-      await this.db.object(`viajes/${this.viajeId}/pasajeros/${this.pasajeroId}`).remove();
+    const toast = await this.toastController.create({
+      message: 'Viaje cancelado.',
+      duration: 2000,
+      color: 'danger',
+    });
+    toast.present();
 
-      const viajeRef = this.db.object(`viajes/${this.viajeId}`).valueChanges();
-      viajeRef.subscribe(async (viaje: any) => {
-        const totalAsientos = viaje.asientosDisponibles || 4;
-        const ocupados = Object.keys(viaje.pasajeros || {}).length;
-        const disponibles = totalAsientos - ocupados;
-
-        await this.db.object(`viajes/${this.viajeId}`).update({ asientosOcupados: ocupados, asientosDisponibles: disponibles });
-      });
-
-      const toast = await this.toastController.create({
-        message: 'Has cancelado el viaje con éxito',
-        duration: 3000,
-        color: 'success',
-      });
-      toast.present();
-
-      this.router.navigate(['/pasajero']);
-    } catch (error) {
-      console.error("Error al cancelar el viaje:", error);
-      const toast = await this.toastController.create({
-        message: 'Error: no se pudo cancelar el viaje.',
-        duration: 3000,
-        color: 'danger',
-      });
-      toast.present();
-    }
+    this.router.navigate(['/historial']);
   }
 }

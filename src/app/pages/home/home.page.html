@@ -41,9 +41,22 @@
       </ion-button>
     </form>
 
-    <!-- Enlace para Registro -->
-    <ion-item lines="none" button (click)="navigateToRegister()" style="text-align: center; margin-top: 16px;">
-      <p>¿No tienes una cuenta? <strong>Regístrate aquí</strong></p>
-    </ion-item>
+    <div style="margin-top: 20px; width: 100%;">
+      <ion-card style="background-color: black; padding: 5px; width: 100%;">
+        <ion-item lines="none" (click)="navigateToRegister()" style="--background: transparent; text-align: center; width: 100%;">
+          <ion-label class="ion-text-center" color="light">
+            ¿No tienes una cuenta? <strong>Regístrate aquí</strong>
+          </ion-label>
+        </ion-item>
+      </ion-card>
+
+      <ion-card style="background-color: black; padding: 10px; width: 100%;">
+        <ion-item lines="none" (click)="recoverPassword()" style="--background: transparent; text-align: center; width: 100%;">
+          <ion-label class="ion-text-center" color="light">
+            ¿Has olvidado la contraseña? <strong>Recuperar contraseña</strong>
+          </ion-label>
+        </ion-item>
+      </ion-card>
+    </div>
   </div>
 </ion-content>

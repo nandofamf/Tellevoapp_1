@@ -47,4 +47,48 @@ export class HomePage {
   navigateToRegister() {
     this.navCtrl.navigateForward('/register');
   }
+
+  async recoverPassword() {
+    const alert = await this.alertCtrl.create({
+      header: 'Recuperar Contraseña',
+      inputs: [
+        {
+          name: 'email',
+          type: 'email',
+          placeholder: 'Correo Electrónico'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+        {
+          text: 'Enviar',
+          handler: async (data) => {
+            if (data.email) {
+              try {
+                await this.afAuth.sendPasswordResetEmail(data.email);
+                const successAlert = await this.alertCtrl.create({
+                  header: 'Éxito',
+                  message: 'Se ha enviado un enlace para restablecer la contraseña a tu correo electrónico.',
+                  buttons: ['OK']
+                });
+                await successAlert.present();
+              } catch (error: any) {
+                const errorAlert = await this.alertCtrl.create({
+                  header: 'Error',
+                  message: 'No se pudo enviar el correo de restablecimiento. Por favor, intenta nuevamente.',
+                  buttons: ['OK']
+                });
+                await errorAlert.present();
+              }
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
 }

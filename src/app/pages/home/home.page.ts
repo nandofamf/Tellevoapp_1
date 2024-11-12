@@ -47,6 +47,7 @@ export class HomePage {
   navigateToRegister() {
     this.navCtrl.navigateForward('/register');
   }
+<<<<<<< HEAD
 
   async recoverPassword() {
     const alert = await this.alertCtrl.create({
@@ -91,4 +92,6 @@ export class HomePage {
     });
     await alert.present();
   }
+=======
+>>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 }

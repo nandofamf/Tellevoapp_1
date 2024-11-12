@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+/* Contenedor de botones para alternar entre Conductor y Pasajero */
+>>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 .buttons-container {
   display: flex;
   justify-content: space-around;
   margin-top: 1rem;
+<<<<<<< HEAD
 }
 
 .viaje-card {
@@ -20,4 +25,137 @@
 .viaje-card p {
   color: #cccccc;
   margin: 0.3rem 0;
+=======
+
+  ion-button {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    color: #ffffff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+    &.danger {
+      background: linear-gradient(135deg, #e53935, #ff5722); /* Gradiente rojo */
+    }
+
+    &:hover {
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+/* Estilo general para títulos de secciones */
+h2, h3 {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.6rem;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  position: relative;
+
+  /* Línea decorativa debajo del texto */
+  &::after {
+    content: '';
+    display: block;
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff7043, #ff5722); /* Gradiente de color */
+    margin: 0.5rem auto 0;
+    border-radius: 5px;
+  }
+}
+
+/* Centrar el mensaje de "No hay notificaciones disponibles" */
+.no-notifications {
+  color: #cccccc;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+
+/* Tarjeta de viaje con diseño más moderno */
+.viaje-card {
+  background: linear-gradient(135deg, #333333, #1e1e1e); /* Fondo en degradado oscuro */
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin: 1rem 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* Sombra más definida */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4); /* Efecto de elevación al hacer hover */
+  }
+
+  h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #b3b3b3;
+    margin: 0.3rem 0;
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+
+    ion-button {
+      font-size: 1.1rem;
+      padding: 0.4rem 1.2rem;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+
+      &.danger {
+        background: linear-gradient(135deg, #e53935, #ff7043); /* Gradiente rojo */
+        color: #ffffff;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      &.medium {
+        background: transparent;
+        color: #ff7043;
+        border: 1px solid #ff7043;
+      }
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4); /* Sombra en hover */
+      }
+
+      &:active {
+        transform: scale(0.96);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra cuando está activo */
+      }
+    }
+  }
+}
+
+/* Estilos adicionales para los textos de pasajeros y notificaciones */
+ion-list {
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin-top: 1rem;
+
+  ion-item {
+    background: #2b2b2b;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+    color: #ffffff;
+
+    ion-label p {
+      color: #ffffff;
+      font-size: 1.2rem;
+    }
+  }
+>>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 }

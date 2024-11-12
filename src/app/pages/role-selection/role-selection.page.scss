@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 .custom-background {
   /* Fondo con degradado gris oscuro */
+=======
+/* Fondo con degradado gris oscuro */
+.custom-background {
+>>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
   --ion-background-color: transparent;
   background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
 }
 
+<<<<<<< HEAD
+=======
+/* Contenedor de botones */
+>>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 .button-container {
   display: flex;
   flex-direction: column;
@@ -13,6 +22,10 @@
   padding: 20px 0;
 }
 
+<<<<<<< HEAD
+=======
+/* Estilo de los botones */
+>>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 .custom-button {
   width: 90%;
   max-width: 400px;
@@ -20,7 +33,11 @@
   font-size: 1.4rem;
   padding: 18px;
   border-radius: 15px;
+<<<<<<< HEAD
   background: linear-gradient(135deg, #2e7d32, #66bb6a); /* Gradiente verde */
+=======
+  background: linear-gradient(135deg, #ec7709, #c0ae0d); /* Gradiente verde */
+>>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
   color: #fff;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
   transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
@@ -38,7 +55,11 @@
 
   &:hover {
     transform: translateY(-5px) scale(1.05);
+<<<<<<< HEAD
     background: linear-gradient(135deg, #388e3c, #81c784); /* Tonos de verde más claro al hacer hover */
+=======
+    background: linear-gradient(135deg, #f78821, #a19207); /* Tonos de verde más claro al hacer hover */
+>>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
   }
 
@@ -63,3 +84,22 @@
     transform: translateY(0);
   }
 }
+<<<<<<< HEAD
+=======
+
+/* Estilo del botón de cerrar sesión */
+.logout-button {
+  margin-right: 20px; /* Ajusta el margen derecho para mayor separación */
+  font-weight: bold;
+  color: #ff3b30; /* Color rojo para resaltar el botón de cerrar sesión */
+  font-size: 1rem;
+  --background: transparent;
+}
+
+/* Estilo centrado para el título */
+.centered-title {
+  text-align: center;
+  flex: 1; /* Ocupa todo el espacio disponible */
+  margin-right: 40px; /* Espacio extra para asegurar que el título esté centrado */
+}
+>>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec

@@ -1,13 +1,5 @@
 ion-content {
   --ion-background-color: transparent;
-<<<<<<< HEAD
-  background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
-}
-
-ion-item {
-  --background: white; /* Fondo blanco para los campos de entrada */
-  color: black; /* Color del texto */
-=======
   background: linear-gradient(135deg, #1a1a1a, #444444);
   display: flex;
   flex-direction: column;
@@ -28,14 +20,11 @@ ion-item {
   margin-bottom: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 8px;
->>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 }
 
 ion-label {
   color: #00bcd4; /* Color celeste para el texto del label */
 }
-<<<<<<< HEAD
-=======
 
 ion-button {
   border-radius: 8px;
@@ -77,4 +66,3 @@ ion-title {
 ion-icon {
   font-size: 1.3em;
 }
->>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec

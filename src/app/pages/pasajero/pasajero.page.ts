@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth'; // Importar AngularFireAuth
-import { AlertController } from '@ionic/angular';
-import { Observable, of } from 'rxjs';
-
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pasajero',
@@ -11,131 +9,83 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./pasajero.page.scss'],
 })
 export class PasajeroPage implements OnInit {
-  viajes$: Observable<any[]> = of([]); // Inicialización con observable vacío
+  viajes: any[] = [];
+  pasajeroId: string = 'currentPasajeroId'; // Ajusta esto con la lógica para obtener el ID real del pasajero
 
   constructor(
-    private firestore: AngularFirestore,
-    private auth: AngularFireAuth, // Inyectar AngularFireAuth
-    private alertController: AlertController
+    private db: AngularFireDatabase,
+    private toastController: ToastController,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.obtenerViajes();
+    this.cargarViajes();
   }
 
-  obtenerViajes() {
-    this.viajes$ = this.firestore.collection('viajes').valueChanges({ idField: 'id' });
+  cargarViajes() {
+    this.db.list('viajes').snapshotChanges().subscribe((changes) => {
+      this.viajes = changes
+        .map((c) => {
+          const data: any = c.payload.val();
+          return {
+            id: c.payload.key,
+            ...(typeof data === 'object' && data !== null ? data : {}),
+            asientosInfo: this.getAsientosDisponibles(data?.asientosDisponibles, data?.pasajeros)
+          };
+        })
+        .filter((viaje: any) => {
+          return viaje.asientosInfo?.ocupados < viaje.asientosDisponibles; // Solo muestra viajes con asientos disponibles
+        });
+    });
   }
 
-  async tomarOferta(viaje: any) {
-    console.log('Intentando tomar el viaje:', viaje);
-
-    const currentUser = await this.auth.currentUser; // Obtener usuario autenticado
-    if (!currentUser) {
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'No se pudo autenticar al usuario.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
-
-    if (viaje.asientosOcupados < viaje.capacidad) {
-      try {
-        // Incrementar asientos ocupados
-        console.log('Incrementando asientos ocupados...');
-        await this.firestore.collection('viajes').doc(viaje.id).update({
-          asientosOcupados: viaje.asientosOcupados + 1
-        });
-        console.log('Asientos ocupados incrementados.');
-
-        // Registrar en el historial
-        console.log('Registrando en el historial...');
-        await this.firestore.collection('historial').add({
-          pasajeroId: currentUser.uid, // UID del pasajero autenticado
-          viajeId: viaje.id,
-          conductorId: viaje.conductorId,
-          direccionPartida: viaje.direccionPartida.place_name,
-          direccionDestino: viaje.direccionDestino.place_name,
-          costo: viaje.costo,
-          fecha: new Date().toISOString(),
-          estado: viaje.estado || 'pendiente'
-        });
-        console.log('Registro en historial completado.');
-
-        // Verificar y eliminar el viaje si ya no hay cupos disponibles
-        if (viaje.asientosOcupados + 1 >= viaje.capacidad) {
-          console.log('Eliminando viaje con cupo lleno...');
-          await this.firestore.collection('viajes').doc(viaje.id).delete();
-          console.log('Viaje eliminado.');
-        }
-
-        const alert = await this.alertController.create({
-          header: 'Éxito',
-          message: 'Has tomado el viaje con éxito.',
-          buttons: ['OK']
-        });
-        await alert.present();
-      } catch (error: unknown) {
-        console.error('Error al tomar el viaje:', error);
-
-        const errorMessage = (error as Error).message || 'Error desconocido';
-        
-        const alert = await this.alertController.create({
-          header: 'Error',
-          message: `Hubo un error al tomar el viaje: ${errorMessage}`,
-          buttons: ['OK']
-        });
-        await alert.present();
-      }
-    } else {
-      const alert = await this.alertController.create({
-        header: 'Sin cupo',
-        message: 'Este viaje ya no tiene cupos disponibles.',
-        buttons: ['OK']
-      });
-      await alert.present();
-    }
-  }
-
-  async actualizarViajes() {
+  // pasajero.page.ts
+  async tomarViaje(viaje: any) {
     try {
-      const viajesSnapshot = await this.firestore.collection('viajes').get().toPromise();
-      if (!viajesSnapshot) {
-        console.log('No hay viajes disponibles para actualizar.');
-        return;
+      const pasajeroId = 'pasajero123'; // Obtén el ID dinámico del pasajero si es necesario
+      console.log("Intentando tomar el viaje con ID:", viaje.id, "y pasajeroId:", pasajeroId);
+  
+      if (!viaje.id) {
+        throw new Error("ID de viaje no válido");
       }
-
-      const batch = this.firestore.firestore.batch();
-
-      viajesSnapshot.docs.forEach((doc) => {
-        const viaje = doc.data() as any; // Asegurando el tipo de viaje
-        if (viaje.asientosOcupados >= viaje.capacidad) {
-          console.log(`Eliminando viaje con ID: ${doc.id} por cupo lleno.`);
-          batch.delete(doc.ref);
-        }
-      });
-
-      await batch.commit();
-      console.log('Viajes con cupo lleno eliminados.');
-
-      const alert = await this.alertController.create({
-        header: 'Actualizado',
-        message: 'Los viajes con cupo lleno han sido eliminados.',
-        buttons: ['OK']
-      });
-      await alert.present();
-
-      this.obtenerViajes(); // Refrescar la lista de viajes
+  
+      // Guarda al pasajero en el viaje en Firebase
+      await this.db.object(`viajes/${viaje.id}/pasajeros/${pasajeroId}`).set(true);
+      console.log("Viaje tomado exitosamente");
+  
+      // Redirige a la página del mapa con el ID del viaje
+      this.router.navigate(['/map'], { queryParams: { viajeId: viaje.id } });
     } catch (error) {
-      console.error('Error al actualizar los viajes:', error);
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'Hubo un error al actualizar los viajes. Por favor, intenta de nuevo.',
-        buttons: ['OK']
+      console.error("Error al tomar el viaje:", error);
+      const toast = await this.toastController.create({
+        message: 'Error: no se pudo tomar el viaje debido a un problema de red.',
+        duration: 3000,
+        color: 'danger',
       });
-      await alert.present();
+      toast.present();
     }
+  }
+  
+
+getCurrentPasajeroId() {
+    // Implementar una forma de obtener el ID del pasajero dinámicamente desde Firebase o el estado de la aplicación
+    return 'pasajero123'; // Ejemplo
+}
+
+
+
+  getAsientosDisponibles(totalAsientos: number, pasajeros: any): { ocupados: number; disponibles: any[]; ocupadosArray: any[] } {
+    if (!pasajeros || typeof pasajeros !== 'object') {
+      pasajeros = {};
+    }
+
+    const asientosOcupados = Object.keys(pasajeros).length;
+    const asientosDisponibles = totalAsientos - asientosOcupados;
+
+    return {
+      ocupados: asientosOcupados,
+      disponibles: asientosDisponibles > 0 ? new Array(asientosDisponibles) : [],
+      ocupadosArray: asientosOcupados > 0 ? new Array(asientosOcupados) : []
+    };
   }
 }

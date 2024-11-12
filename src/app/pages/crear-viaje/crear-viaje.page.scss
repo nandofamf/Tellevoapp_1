@@ -1,48 +1,55 @@
-.input-item {
-  margin-bottom: 15px; /* Espaciado entre campos de entrada */
+ion-datetime {
+  --ion-background-color: #ffffff; /* Fondo blanco para contraste */
+  --ion-text-color: #000000; /* Color de texto general en negro */
+  --color: #000000; /* Color negro en texto general */
 }
 
-.suggestions-list {
-  margin-top: -10px; /* Reduce el espacio entre el input y la lista de sugerencias */
-  margin-bottom: 15px; /* Añade espacio después de la lista */
+/* Forzar el color negro en cada parte específica */
+ion-datetime::part(day) {
+  color: #000000 !important; /* Color de los días en negro */
 }
 
-.create-button {
-  margin-top: 20px; /* Añade espacio antes del botón */
-  margin-bottom: 20px; /* Añade espacio después del botón */
-  --background: #28a745; /* Color verde para el fondo del botón */
-  color: #ffffff !important; /* Texto blanco */
-  font-weight: bold; /* Texto negrita */
+ion-datetime::part(month) {
+  color: #000000 !important; /* Color del mes en negro */
 }
 
-.map-container {
-  height: 50vh; /* Mapa más grande y responsivo */
-  border-radius: 10px; /* Bordes redondeados para el mapa */
-  overflow: hidden; /* Asegura que el contenido no se desborde */
-  margin-bottom: 20px; /* Espaciado adicional al final */
+ion-datetime::part(year) {
+  color: #000000 !important; /* Color del año en negro */
 }
 
-ion-label {
-  color: #ffffff !important; /* Texto blanco para las etiquetas */
-  font-weight: bold; /* Negrita para mejorar la legibilidad */
+ion-datetime::part(date) {
+  color: #000000 !important; /* Color de las fechas en negro */
 }
 
-ion-input {
-  color: #ffffff !important; /* Texto blanco para los inputs */
+ion-datetime::part(time) {
+  color: #000000 !important; /* Color de la hora en negro */
 }
 
-ion-input::placeholder {
-  color: #aaaaaa !important; /* Color gris claro para el placeholder */
-  font-weight: 400; /* Peso de fuente para el placeholder */
+ion-datetime::part(title) {
+  color: #000000 !important; /* Color del título en negro */
 }
 
-ion-note {
-  font-size: 12px;
-  margin-top: 5px;
-  color: #ff6666 !important; /* Color rojo para las notas de error */
+
+ion-card {
+  color: #ffffff;
 }
 
-ion-title {
-  color: #ffffff !important; /* Color blanco para el título */
-  font-weight: bold; /* Negrita en el título */
+.seats-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.seats-label {
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.seat-count {
+  text-align: center;
+  width: 30px;
+  font-weight: bold;
+  display: inline-block;
+  margin: 0 10px;
 }

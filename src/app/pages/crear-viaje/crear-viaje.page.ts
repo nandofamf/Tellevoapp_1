@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AlertController, NavController } from '@ionic/angular';
-import * as mapboxgl from 'mapbox-gl';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { Storage } from '@ionic/storage-angular';
-import { Feature, LineString } from 'geojson';
+import { ViajeDataService } from '../../services/viaje-data.service';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
+import { GeocodingService } from '../../services/geocoding.service';
 
 @Component({
   selector: 'app-crear-viaje',
@@ -14,234 +11,111 @@ import { Feature, LineString } from 'geojson';
   styleUrls: ['./crear-viaje.page.scss'],
 })
 export class CrearViajePage implements OnInit {
-  direccionPartidaInput: string = '';
-  direccionDestinoInput: string = '';
-  direccionPartida: any = {};
-  direccionDestino: any = {};
-  capacidad: number = 0;
-  costo: number = 0;
+  direccionPartida: string = '';
+  direccionDestino: string = '';
+  fechaViaje: string = '';
+  horaViaje: string = '';
+  seats: number = 1;
   patente: string = '';
-  modelo: string = '';
-  map!: mapboxgl.Map;
-
-  lugaresPartida: any[] = [];
-  lugaresDestino: any[] = [];
-  partidaMarker!: mapboxgl.Marker;
-  destinoMarker!: mapboxgl.Marker;
+  precioAsiento: number = 0;
+  comentarios: string = '';
 
   constructor(
-    private firestore: AngularFirestore,
-    private auth: AngularFireAuth,
-    private alertController: AlertController,
-    private http: HttpClient,
-    private storage: Storage,
-    private navCtrl: NavController
+    private viajeDataService: ViajeDataService,
+    private db: AngularFireDatabase,
+    private router: Router,
+    private toastController: ToastController,
+    private geocodingService: GeocodingService
   ) {}
 
-  async ngOnInit() {
-    await this.storage.create();
-  }
-
-  ionViewDidEnter() {
-    setTimeout(() => {
-      this.inicializarMapa();
-    }, 300); // Retraso para asegurar que el contenedor esté renderizado
-  }
-
-  inicializarMapa() {
-    (mapboxgl as any).accessToken = environment.mapbox.accessToken;
-
-    const mapContainer = document.getElementById('map-crear-viaje');
-    if (mapContainer) {
-      this.map = new mapboxgl.Map({
-        container: 'map-crear-viaje',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-70.64827, -33.45694], // Coordenadas iniciales (Santiago, Chile)
-        zoom: 10,
-      });
-
-      this.map.on('load', () => {
-        this.map.resize(); // Redimensiona el mapa cuando se carga
-      });
-
-      this.map.on('click', (event) => this.establecerMarcador(event.lngLat));
-    } else {
-      console.error('Contenedor del mapa no encontrado');
+  ngOnInit() {
+    const viajeData = this.viajeDataService.getViajeData();
+    if (viajeData) {
+      this.direccionPartida = viajeData.direccionPartida;
+      this.direccionDestino = viajeData.direccionDestino;
     }
   }
 
-  establecerMarcador(lngLat: mapboxgl.LngLat) {
-    if (!this.direccionPartida.lat && !this.direccionPartida.lng) {
-      // Establecer partida
-      this.direccionPartida = { lat: lngLat.lat, lng: lngLat.lng };
-      this.partidaMarker = new mapboxgl.Marker({ color: 'blue' })
-        .setLngLat([lngLat.lng, lngLat.lat])
-        .addTo(this.map);
-    } else if (!this.direccionDestino.lat && !this.direccionDestino.lng) {
-      // Establecer destino
-      this.direccionDestino = { lat: lngLat.lat, lng: lngLat.lng };
-      this.destinoMarker = new mapboxgl.Marker({ color: 'red' })
-        .setLngLat([lngLat.lng, lngLat.lat])
-        .addTo(this.map);
+  incrementSeats() {
+    this.seats++;
+  }
 
-      // Dibujar la ruta
-      this.obtenerRuta();
+  decrementSeats() {
+    if (this.seats > 1) {
+      this.seats--;
     }
   }
 
-  buscarLugar(tipo: string, event: any) {
-    const query = event.target.value.trim();
-    if (query.length > 0) {
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${environment.mapbox.accessToken}&autocomplete=true&limit=5`;
-      this.http.get(url).subscribe((res: any) => {
-        if (tipo === 'partida') {
-          this.lugaresPartida = res.features;
-        } else {
-          this.lugaresDestino = res.features;
-        }
-      });
-    } else {
-      if (tipo === 'partida') {
-        this.lugaresPartida = [];
+  async mostrarToast(mensaje: string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      color: color,
+      position: 'bottom',
+    });
+    await toast.present();
+  }
+
+  guardarViajeEnFirebase() {
+    // Validar que al menos haya un asiento disponible
+    if (this.seats < 1) {
+      this.mostrarToast('Por favor, asegúrate de tener al menos un asiento disponible.', 'danger');
+      return;
+    }
+
+    // Obtenemos las coordenadas de partida y destino
+    this.geocodingService.getCoordinates(this.direccionPartida).subscribe(coordsPartida => {
+      if (coordsPartida) {
+        this.geocodingService.getCoordinates(this.direccionDestino).subscribe(coordsDestino => {
+          if (coordsDestino) {
+            // Guardar el viaje en Firebase con coordenadas
+            const viajeData = {
+              direccionPartida: this.direccionPartida,
+              direccionDestino: this.direccionDestino,
+              fechaViaje: this.fechaViaje || new Date().toLocaleDateString(),
+              horaViaje: this.horaViaje || new Date().toLocaleTimeString(),
+              asientosDisponibles: this.seats,
+              patente: this.patente || 'Sin patente',
+              precioAsiento: this.precioAsiento || 0,
+              comentarios: this.comentarios,
+              latPartida: coordsPartida[1],
+              lngPartida: coordsPartida[0],
+              latDestino: coordsDestino[1],
+              lngDestino: coordsDestino[0]
+            };
+
+            this.db.list('viajes').push(viajeData)
+              .then(() => {
+                this.mostrarToast('Se ha creado con éxito el viaje', 'success');
+                this.router.navigate(['/historial']);
+              })
+              .catch(error => {
+                console.error('Error al guardar en Firebase', error);
+                this.mostrarToast('Error al guardar el viaje. Intente nuevamente.', 'danger');
+              });
+          } else {
+            this.mostrarToast('No se pudieron obtener las coordenadas del destino.', 'danger');
+          }
+        });
       } else {
-        this.lugaresDestino = [];
+        this.mostrarToast('No se pudieron obtener las coordenadas de partida.', 'danger');
       }
-    }
+    });
   }
 
-  seleccionarLugar(tipo: string, lugar: any) {
-    const [lng, lat] = lugar.center;
-    if (tipo === 'partida') {
-      this.direccionPartida = { lat, lng, place_name: lugar.place_name };
-      this.direccionPartidaInput = lugar.place_name;
-      this.lugaresPartida = [];
-
-      if (this.partidaMarker) this.partidaMarker.remove();
-      this.partidaMarker = new mapboxgl.Marker({ color: 'blue' })
-        .setLngLat([lng, lat])
-        .addTo(this.map);
-    } else {
-      this.direccionDestino = { lat, lng, place_name: lugar.place_name };
-      this.direccionDestinoInput = lugar.place_name;
-      this.lugaresDestino = [];
-
-      if (this.destinoMarker) this.destinoMarker.remove();
-      this.destinoMarker = new mapboxgl.Marker({ color: 'red' })
-        .setLngLat([lng, lat])
-        .addTo(this.map);
-    }
-
-    this.map.flyTo({ center: [lng, lat], zoom: 14 });
-
-    if (this.direccionPartida && this.direccionDestino) {
-      this.obtenerRuta();
-    }
-  }
-
-  obtenerRuta() {
-    if (
-        this.direccionPartida &&
-        this.direccionPartida.lng !== undefined &&
-        this.direccionPartida.lat !== undefined &&
-        this.direccionDestino &&
-        this.direccionDestino.lng !== undefined &&
-        this.direccionDestino.lat !== undefined
-    ) {
-        const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${this.direccionPartida.lng},${this.direccionPartida.lat};${this.direccionDestino.lng},${this.direccionDestino.lat}?geometries=geojson&access_token=${environment.mapbox.accessToken}`;
-
-        this.http.get(url).subscribe(
-            (response: any) => {
-                const ruta = response.routes[0].geometry;
-
-                if (this.map.getSource('route')) {
-                    (this.map.getSource('route') as mapboxgl.GeoJSONSource).setData(ruta);
-                } else {
-                    this.map.addSource('route', {
-                        type: 'geojson',
-                        data: ruta,
-                    });
-
-                    this.map.addLayer({
-                        id: 'route',
-                        type: 'line',
-                        source: 'route',
-                        layout: {
-                            'line-join': 'round',
-                            'line-cap': 'round',
-                        },
-                        paint: {
-                            'line-color': '#007aff',
-                            'line-width': 4,
-                            'line-dasharray': [2, 2], // Línea de puntos
-                        },
-                    });
-                }
-            },
-            (error) => {
-                console.error("Error al obtener la ruta:", error);
-            }
-        );
-    } else {
-        console.warn("Las coordenadas de partida o destino no están definidas.");
-    }
-}
-
-
-  async crearViaje() {
-    const currentUser = await this.auth.currentUser;
-    if (!currentUser) {
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'No se pudo autenticar al usuario.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
-
-    if (!this.costo || !this.patente || !this.modelo) {
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'Por favor, completa todos los campos obligatorios.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
-
-    const viaje = {
+  guardarViaje() {
+    this.viajeDataService.setViajeData({
       direccionPartida: this.direccionPartida,
       direccionDestino: this.direccionDestino,
-      capacidad: this.capacidad,
-      costo: this.costo,
-      asientosOcupados: 0,
-      estado: 'pendiente',
-      conductorId: currentUser.uid,
-      timestamp: new Date(),
-    };
+      fechaViaje: this.fechaViaje,
+      horaViaje: this.horaViaje,
+      asientosDisponibles: this.seats,
+      patente: this.patente,
+      precioAsiento: this.precioAsiento,
+      comentarios: this.comentarios,
+    });
 
-    try {
-      await this.firestore.collection('viajes').add(viaje);
-
-      const alert = await this.alertController.create({
-        header: 'Viaje Creado',
-        message: 'Se ha creado el viaje con éxito.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-
-      this.navCtrl.navigateBack('/conductor');
-    } catch (error) {
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'Hubo un error al crear el viaje. Intenta nuevamente.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    }
-  }
-
-  convertirMayusculas(event: any) {
-    this.patente = event.target.value.toUpperCase();
+    // Guarda el viaje en Firebase
+    this.guardarViajeEnFirebase();
   }
 }

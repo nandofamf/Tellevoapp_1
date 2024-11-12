@@ -1,28 +1,13 @@
-.container {
-  padding: 16px;
+ion-content {
+  --ion-background-color: transparent;
+  background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
 }
 
-.title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
+ion-item {
+  --background: white; /* Fondo blanco para los campos de entrada */
+  color: black; /* Color del texto */
 }
 
-.map-container {
-  width: 100%;
-  height: 50vh; // Ajusta la altura según sea necesario
-  margin-top: 16px;
-  border-radius: 8px; // Bordes redondeados para el mapa
-  overflow: hidden; // Para que el contenido del mapa no sobresalga
-}
-
-.info-card {
-  margin-top: 10px; // Espaciado superior para el card
-  background-color: rgba(0, 0, 0, 0.5); // Fondo semi-transparente
-  border-radius: 8px; // Bordes redondeados
-  color: white; // Color del texto
-}
-
-.action-buttons {
-  margin: 20px; // Espaciado para los botones de acción
+ion-label {
+  color: #00bcd4; /* Color celeste para el texto del label */
 }

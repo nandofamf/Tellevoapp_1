@@ -1,33 +1,30 @@
 <ion-header>
-  <ion-toolbar color="dark"> 
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/role-selection"></ion-back-button> 
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title>Pasajero</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="solid" color="primary" size="small" (click)="actualizarViajes()">
-        <ion-icon name="refresh-outline" slot="start"></ion-icon>
-        Actualizar
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let viaje of viajes$ | async">
-      <ion-label>
-        <h2>{{ viaje.direccionPartida.place_name }} → {{ viaje.direccionDestino.place_name }}</h2>
-        <p>Hora de salida: {{ viaje.horaSalida | date:'shortTime' }}</p>
-        <p>Capacidad Total: {{ viaje.capacidad }}</p>
-        <p>Costo por persona: ${{ viaje.costo }}</p>
-        <p>Cupos ocupados: {{ viaje.asientosOcupados }} / {{ viaje.capacidad }}</p>
-      </ion-label>
-      <ion-button slot="end" fill="outline" color="secondary" (click)="tomarOferta(viaje)">Tomar</ion-button>
-    </ion-item>
-  </ion-list>
-  
-  <ion-label *ngIf="(viajes$ | async)?.length === 0" class="empty-message">
-    No hay viajes disponibles.
-  </ion-label>
+  <ion-card *ngFor="let viaje of viajes">
+    <ion-card-content>
+      <p><strong>Dirección de Partida:</strong> {{ viaje.direccionPartida }}</p>
+      <p><strong>Dirección de Destino:</strong> {{ viaje.direccionDestino }}</p>
+      <p><strong>Precio por Asiento:</strong> ${{ viaje.precioAsiento }}</p>
+      <p><strong>Asientos Disponibles:</strong> {{ viaje.asientosInfo.ocupados }} / {{ viaje.asientosDisponibles }}</p>
+      
+      <div>
+        <ng-container *ngFor="let asiento of viaje.asientosInfo.ocupadosArray">
+          <ion-icon name="person"></ion-icon>
+        </ng-container>
+        <ng-container *ngFor="let asiento of viaje.asientosInfo.disponibles">
+          <ion-icon name="person-outline"></ion-icon>
+        </ng-container>
+      </div>
+      
+      <ion-button expand="full" color="danger" (click)="tomarViaje(viaje)">Tomar viaje</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

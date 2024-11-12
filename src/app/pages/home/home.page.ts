@@ -28,7 +28,7 @@ export class HomePage {
       this.navCtrl.navigateForward('/role-selection');
     } catch (error: any) {
       // Personalizar el mensaje de error según el código de error
-      let errorMessage = 'Ocurrió un error. Por favor, intenta de nuevo.';
+      let errorMessage = 'Contraseña o usuario incorrecto. Por favor, verifica e intenta de nuevo.';
       if (error.code === 'auth/wrong-password') {
         errorMessage = 'La contraseña es incorrecta. Por favor, verifica e intenta de nuevo.';
       } else if (error.code === 'auth/user-not-found') {

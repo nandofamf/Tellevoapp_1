@@ -1,12 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Mapa del Viaje</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/pasajero"></ion-back-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
+    <ion-title>Detalle del Viaje</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div id="map" style="width: 100%; height: 100%;"></div>
+  <ion-card *ngIf="direccionPartida && direccionDestino">
+    <ion-card-header>
+      <ion-card-title>Información del Viaje</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Dirección de Partida:</strong> {{ direccionPartida || 'No disponible' }}</p>
+      <p><strong>Dirección de Destino:</strong> {{ direccionDestino || 'No disponible' }}</p>
+      <p><strong>Precio por Asiento:</strong> ${{ precioAsiento || 'No disponible' }}</p>
+    </ion-card-content>
+  </ion-card>
+  <div style="height: 100%; width: 100%;" id="map"></div>
 </ion-content>

@@ -18,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
 // Services
-import { MapsService } from './services/maps.service';
+import { MapsService } from './services/maps.service'; // Asegúrate de que esta ruta sea correcta
+import { ViajeService } from './services/viaje.service';
 
 // Ionic Storage Import
 import { IonicStorageModule } from '@ionic/storage-angular';
@@ -33,11 +34,12 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     AngularFireAuthModule,
     AngularFirestoreModule,
     HttpClientModule,
-    IonicStorageModule.forRoot() 
+    IonicStorageModule.forRoot(),
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    MapsService
+    MapsService,
+    ViajeService, // Agrega ViajeService como proveedor
   ],
   bootstrap: [AppComponent],
 })

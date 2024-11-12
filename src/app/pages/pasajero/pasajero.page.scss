@@ -1,0 +1,112 @@
+/* Fondo degradado para el contenido */
+ion-content {
+  --ion-background-color: transparent;
+  background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+}
+
+/* Contenedor de la lista de viajes */
+ion-list {
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+/* Estilo de cada elemento de viaje */
+ion-item {
+  background: #2c2c2c; /* Fondo oscuro para cada tarjeta de viaje */
+  color: #ffffff;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 10px; /* Espaciado reducido */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  /* Efecto hover */
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  ion-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Espaciado reducido entre líneas */
+    font-size: 0.95rem; /* Tamaño de fuente ligeramente más pequeño */
+    color: #ffffff;
+
+    h2 {
+      font-size: 1.2rem; /* Tamaño de título reducido */
+      color: #ff7043;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+
+    p {
+      color: #d0d0d0;
+      font-size: 0.9rem; /* Reducir un poco el tamaño de las descripciones */
+      line-height: 1.4; /* Espaciado entre líneas ajustado */
+      margin: 2px 0;
+      
+      strong {
+        color: #ff7043; /* Mantener el color de acento para el texto en negrita */
+      }
+    }
+  }
+}
+
+/* Botón de 'Tomar Viaje' */
+ion-button {
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 8px 12px; /* Tamaño de botón más compacto */
+  color: #ffffff;
+  background: linear-gradient(135deg, #3f3f3f, #201f1f);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  &:active {
+    transform: scale(0.95);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Mensaje de 'No hay viajes disponibles' */
+.empty-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #b0b0b0;
+  height: 100%;
+  text-align: center;
+  padding: 20px;
+  opacity: 0.8;
+}
+
+/* Estilo para el ícono de refrescar en el botón de recargar */
+ion-icon[name="refresh"] {
+  color: #ffffff;
+  font-size: 1.4rem;
+}
+
+/* Estilos para la sección de asientos disponibles */
+.asientos-disponibles {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+ion-icon {
+  font-size: 1.1rem;
+  color: #ff7043;
+}

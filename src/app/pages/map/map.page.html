@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/historial"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mapa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="direccionPartida && direccionDestino">
+    <ion-card-header>
+      <ion-card-title>Detalles del Viaje</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Dirección de Partida:</strong> {{ direccionPartida }}</p>
+      <p><strong>Dirección de Destino:</strong> {{ direccionDestino }}</p>
+      <p><strong>Precio por Asiento:</strong> ${{ precioAsiento || 'No disponible' }}</p>
+      <p><strong>Patente:</strong> {{ patente }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <div id="map" style="height: 400px; margin: 1rem 0;"></div>
+
+  <ion-button expand="full" color="danger" (click)="cancelarViaje()">Cancelar Viaje</ion-button>
+</ion-content>

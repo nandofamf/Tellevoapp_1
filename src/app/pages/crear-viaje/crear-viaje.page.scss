@@ -1,0 +1,91 @@
+/* Fondo general de la página */
+ion-content {
+  --ion-background-color: #1a1a1a;
+  color: #ffffff;
+  padding: 16px;
+}
+
+/* Diseño de los ion-item */
+ion-item {
+  --background: #2e2e2e; /* Fondo gris oscuro */
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Sombra para resaltar cada campo */
+}
+
+/* Estilo para los labels */
+ion-label {
+  color: #00bcd4;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+/* Diseño del ion-datetime para mejorar el calendario */
+ion-datetime {
+  --ion-background-color: #444444; /* Fondo gris oscuro para el calendario */
+  border-radius: 8px;
+  margin-top: 10px;
+  padding: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Colores y tamaño de los elementos específicos en ion-datetime */
+ion-datetime::part(month) {
+  color: #4caf50 !important; /* Verde para el mes */
+  font-weight: bold;
+}
+
+ion-datetime::part(year) {
+  color: #00bcd4 !important; /* Celeste para el año */
+  font-weight: bold;
+}
+
+ion-datetime::part(day) {
+  color: #ffffff !important; /* Blanco para los días de la semana */
+  font-weight: bold;
+}
+
+ion-datetime::part(date) {
+  color: #ff9800 !important; /* Naranja para las fechas */
+  font-size: 1.2em; /* Tamaño más grande en fechas */
+  font-weight: bold;
+}
+
+ion-datetime::part(date[highlighted]) {
+  color: #f44336 !important; /* Rojo para el día seleccionado */
+  background-color: #ffffff30; /* Fondo semitransparente para resaltar */
+  border-radius: 50%;
+}
+
+/* Botones de incrementar y decrementar asientos */
+ion-icon[name="remove-circle"],
+ion-icon[name="add-circle"] {
+  color: #f44336; /* Color rojo para restar */
+  font-size: 1.6em;
+  padding: 4px;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+ion-icon[name="add-circle"] {
+  color: #4caf50; /* Color verde para sumar */
+}
+
+/* Estilo para la cantidad de asientos */
+ion-note {
+  color: #ffffff;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 0 12px;
+}
+
+/* Estilo para el botón de guardar */
+ion-button {
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background-color: #00bcd4;
+}

@@ -1,0 +1,55 @@
+ion-item {
+    --background: #eee8e8; 
+    --border-color: #000000; 
+    --padding-start: 10px; 
+    border-radius: 8px; 
+    margin-bottom: 10px; 
+  }
+  
+  ion-input {
+    color: #000; 
+  }
+  
+  ion-icon {
+    color: #000000; 
+  }
+  
+  ion-button {
+    --color: #ffffff; 
+    --background: #28a745; 
+  }
+
+  ion-button ion-icon {
+    color: #28a745;
+  }
+
+  
+.custom-button {
+  --background: #4caf50;
+  --border-radius: 20px; 
+  --padding-start: 15px;
+  --padding-end: 15px;  
+  --color: #110909;       
+  --box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); 
+  font-weight: bold;   
+  text-transform: uppercase; 
+  transition: transform 0.3s ease; 
+}
+
+.custom-button:hover {
+  transform: scale(1.05); 
+  --box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); 
+}
+
+
+.custom-button ion-icon {
+  color: #000000;
+  margin-right: 8px; 
+}
+
+ion-item.custom-item {
+  --background: white; /* Cambia el fondo del ion-item a blanco */
+  --color: black;      /* Opcional: cambia el color del texto a negro para mejor visibilidad */
+  border-radius: 8px;  /* Opcional: agrega un borde redondeado */
+  margin-bottom: 10px; /* Opcional: agrega un margen inferior */
+}

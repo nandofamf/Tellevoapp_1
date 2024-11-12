@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/role-selection"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pasajero</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="viajesDisponibles.length > 0">
+    <ion-item *ngFor="let viaje of viajesDisponibles">
+      <ion-label>
+        <h2>Viaje</h2>
+        <p><strong>Desde:</strong> {{ viaje.direccionPartida }}</p>
+        <p><strong>Hasta:</strong> {{ viaje.direccionDestino }}</p>
+        <p><strong>Precio por Asiento:</strong> ${{ viaje.precioAsiento || 'No disponible' }}</p>
+        <p><strong>Fecha:</strong> {{ viaje.fechaViaje }}</p>
+      </ion-label>
+      <ion-button slot="end" color="primary" (click)="tomarViaje(viaje.id)">Tomar Viaje</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="viajesDisponibles.length === 0">
+    <p>No hay viajes disponibles en este momento.</p>
+  </div>
+</ion-content>

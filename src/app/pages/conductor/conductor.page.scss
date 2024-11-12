@@ -1,0 +1,68 @@
+ion-content {
+  --ion-background-color: transparent;
+  background: linear-gradient(135deg, #1a1a1a, #444444);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+#map {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+}
+
+ion-item {
+  --background: #333333; /* Fondo gris oscuro */
+  color: white; /* Color del texto */
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+}
+
+ion-label {
+  color: #00bcd4; /* Color celeste para el texto del label */
+}
+
+ion-button {
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para la lista de sugerencias */
+ion-list {
+  margin-top: 10px;
+  padding: 0 8px;
+}
+
+ion-list ion-item {
+  --background: #444444; /* Fondo ligeramente más oscuro */
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); /* Sombra suave */
+  transition: background 0.3s ease;
+}
+
+ion-list ion-item:hover {
+  --background: #555555; /* Fondo más claro al pasar el ratón */
+}
+
+ion-toolbar {
+  --background: #2a2a2a; /* Color oscuro para la barra de herramientas */
+  border-bottom: 1px solid #00bcd4;
+}
+
+ion-title {
+  font-size: 1.4em;
+  color: #00bcd4;
+}
+
+ion-icon {
+  font-size: 1.3em;
+}

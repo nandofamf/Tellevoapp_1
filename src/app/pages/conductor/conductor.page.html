@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Conductor</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/role-selection"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="ngOnInit()" color="primary">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="map" style="width: 100%; height: 300px;"></div>
+
+  <ion-item>
+    <ion-label position="floating">¿Dónde partes?</ion-label>
+    <ion-input [(ngModel)]="direccionPartida" (ionInput)="obtenerSugerenciasPartida()"></ion-input>
+  </ion-item>
+  <ion-list *ngIf="sugerenciasPartida.length > 0">
+    <ion-item *ngFor="let sugerencia of sugerenciasPartida" (click)="seleccionarDireccionPartida(sugerencia)">
+      {{ sugerencia }}
+    </ion-item>
+  </ion-list>
+
+  <ion-item>
+    <ion-label position="floating">¿Adónde vas?</ion-label>
+    <ion-input [(ngModel)]="direccionDestino" (ionInput)="obtenerSugerenciasDestino()"></ion-input>
+  </ion-item>
+  <ion-list *ngIf="sugerenciasDestino.length > 0">
+    <ion-item *ngFor="let sugerencia of sugerenciasDestino" (click)="seleccionarDireccionDestino(sugerencia)">
+      {{ sugerencia }}
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="danger" (click)="crearViaje()">Crear Viaje</ion-button>
+</ion-content>

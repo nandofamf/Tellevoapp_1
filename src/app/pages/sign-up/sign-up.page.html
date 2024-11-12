@@ -1,0 +1,63 @@
+<ion-content class="ion-padding" color="dark">
+
+  <swiper-container>
+    <swiper-slide>
+      <div class="form-slide">
+        <h2 class="title">Regístrate</h2>
+        <ion-item lines="none">
+          <ion-icon name="person" slot="start"></ion-icon>
+          <ion-input placeholder="Ingresa tu nombre" [(ngModel)]="nombre" (ionInput)="Validar()"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="person" slot="start"></ion-icon>
+          <ion-input placeholder="Ingresa tu apellido" [(ngModel)]="apellido" (ionInput)="Validar()"></ion-input>
+        </ion-item>
+        <ion-button expand="block" fill="clear" (click)="nextSlide()" [disabled]="!canProceed">
+          Continuar
+        </ion-button>
+        <ion-item lines="none">
+          <p>Ya tienes una cuenta? <a href="/home"> Login</a></p>
+        </ion-item>
+        <hr>
+        <ion-item lines="none" >
+          <ion-icon name="logo-apple" slot="start"></ion-icon>
+          <ion-button fill="clear">Continuar Con Apple</ion-button>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="logo-google" slot="start"></ion-icon>
+          <ion-button fill="clear" >Continuar Con Google</ion-button>
+        </ion-item>  
+      </div>
+    </swiper-slide>
+
+    <swiper-slide>
+      <div class="form-slide">
+        <h2 class="title">Regístrate</h2>
+        <ion-item lines="none">
+          <ion-icon name="mail" slot="start"></ion-icon>
+          <ion-input placeholder="Ingresa tu correo" [(ngModel)]="email" (ionInput)="Validar()" type="email"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="lock-closed" slot="start"></ion-icon>
+          <ion-input placeholder="Ingresa tu contraseña" [(ngModel)]="password" (ionInput)="Validar()" type="password"></ion-input>
+        </ion-item>
+        <ion-button expand="block" fill="clear" (click)="registrarUsuario()" [disabled]="!canProceed">
+          Registrar
+        </ion-button>
+        <ion-item lines="none">
+          <p>Ya tienes una cuenta? <a href="/home"> Login</a></p>
+        </ion-item>
+        <hr>
+        <ion-item lines="none" >
+          <ion-icon name="logo-apple" slot="start"></ion-icon>
+          <ion-button fill="clear">Continuar Con Apple</ion-button>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="logo-google" slot="start"></ion-icon>
+          <ion-button fill="clear" >Continuar Con Google</ion-button>
+        </ion-item>  
+      </div>
+    </swiper-slide>
+  </swiper-container>
+  
+</ion-content>

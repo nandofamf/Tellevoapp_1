@@ -1,32 +1,27 @@
 <ion-header>
-  <ion-toolbar color="dark"> 
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/role-selection"></ion-back-button> 
+      <ion-back-button defaultHref="/role-selection"></ion-back-button>
     </ion-buttons>
     <ion-title>Pasajero</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let viaje of viajes">
-    <ion-card-content>
-      <p><strong>Dirección de Partida:</strong> {{ viaje.direccionPartida }}</p>
-      <p><strong>Dirección de Destino:</strong> {{ viaje.direccionDestino }}</p>
-      <p><strong>Precio por Asiento:</strong> ${{ viaje.precioAsiento }}</p>
-      <p><strong>Asientos Disponibles:</strong> {{ viaje.asientosInfo.ocupados }} / {{ viaje.asientosDisponibles }}</p>
-      
-      <div>
-        <ng-container *ngFor="let asiento of viaje.asientosInfo.ocupadosArray">
-          <ion-icon name="person"></ion-icon>
-        </ng-container>
-        <ng-container *ngFor="let asiento of viaje.asientosInfo.disponibles">
-          <ion-icon name="person-outline"></ion-icon>
-        </ng-container>
-      </div>
-      
-      <ion-button expand="full" color="danger" (click)="tomarViaje(viaje.id)">Tomar viaje</ion-button>
+  <ion-list *ngIf="viajesDisponibles.length > 0">
+    <ion-item *ngFor="let viaje of viajesDisponibles">
+      <ion-label>
+        <h2>Viaje</h2>
+        <p><strong>Desde:</strong> {{ viaje.direccionPartida }}</p>
+        <p><strong>Hasta:</strong> {{ viaje.direccionDestino }}</p>
+        <p><strong>Precio por Asiento:</strong> ${{ viaje.precioAsiento || 'No disponible' }}</p>
+        <p><strong>Fecha:</strong> {{ viaje.fechaViaje }}</p>
+      </ion-label>
+      <ion-button slot="end" color="primary" (click)="tomarViaje(viaje.id)">Tomar Viaje</ion-button>
+    </ion-item>
+  </ion-list>
 
-
-    </ion-card-content>
-  </ion-card>
+  <div *ngIf="viajesDisponibles.length === 0">
+    <p>No hay viajes disponibles en este momento.</p>
+  </div>
 </ion-content>

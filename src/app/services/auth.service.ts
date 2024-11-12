@@ -16,7 +16,9 @@ export class AuthService {
       map(user => {
         if (user && user.email) {
           // Remueve caracteres especiales y convierte el correo a minúsculas
-          return user.email.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+          const formattedEmail = user.email.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+          console.log('Correo electrónico del usuario autenticado:', formattedEmail);
+          return formattedEmail;
         }
         return null;
       })

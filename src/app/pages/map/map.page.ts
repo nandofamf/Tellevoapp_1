@@ -4,6 +4,7 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 import mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-map',
@@ -24,7 +25,8 @@ export class MapPage implements OnInit {
     private route: ActivatedRoute,
     private db: AngularFireDatabase,
     private toastController: ToastController,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -66,7 +68,7 @@ export class MapPage implements OnInit {
       if (viaje) {
         this.direccionPartida = viaje.direccionPartida || 'No disponible';
         this.direccionDestino = viaje.direccionDestino || 'No disponible';
-        this.precioAsiento = viaje.precio || null;
+        this.precioAsiento = viaje.precioAsiento || null;  // Ajuste del nombre del campo
         this.patente = viaje.patente || 'No disponible';
         this.partidaCoords = [viaje.lngPartida, viaje.latPartida];
         this.destinoCoords = [viaje.lngDestino, viaje.latDestino];
@@ -84,11 +86,43 @@ export class MapPage implements OnInit {
       return;
     }
 
-    this.map.flyTo({ center: partida, zoom: 12 });
+    // Añadir marcadores de partida y destino
     new mapboxgl.Marker().setLngLat(partida).addTo(this.map);
     new mapboxgl.Marker().setLngLat(destino).addTo(this.map);
 
-    // Lógica para dibujar la ruta en el mapa si es necesario
+    // Solicitar la ruta a la API de direcciones de Mapbox
+    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${partida[0]},${partida[1]};${destino[0]},${destino[1]}?geometries=geojson&access_token=${environment.mapbox.accessToken}`;
+
+    this.http.get(url).subscribe((response: any) => {
+      if (response && response.routes && response.routes.length > 0) {
+        const route = response.routes[0].geometry.coordinates;
+
+        // Añadir la ruta al mapa
+        this.map.addLayer({
+          id: 'route',
+          type: 'line',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'LineString',
+                coordinates: route,
+              },
+            },
+          },
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round',
+          },
+          paint: {
+            'line-color': '#1E90FF',
+            'line-width': 4,
+          },
+        });
+      }
+    });
   }
 
   async cancelarViaje() {

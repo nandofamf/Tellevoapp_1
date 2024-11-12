@@ -32,8 +32,14 @@ export class CrearViajePage implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Obtener el correo del usuario autenticado y formatearlo sin caracteres especiales
     this.authService.getUserEmail().subscribe(email => {
-      this.conductorId = email;
+      if (email) {
+        this.conductorId = email.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();  // Formato consistente
+        console.log("Conductor ID:", this.conductorId);
+      } else {
+        console.error("Conductor no autenticado");
+      }
     });
 
     const viajeData = this.viajeDataService.getViajeData();
@@ -76,7 +82,7 @@ export class CrearViajePage implements OnInit {
               lngPartida: coordsPartida[0],
               latDestino: coordsDestino[1],
               lngDestino: coordsDestino[0],
-              conductorId: this.conductorId
+              idconductor: this.conductorId  // Utilizamos el formato consistente de idconductor
             };
 
             this.db.list('viajes').push(viajeData)

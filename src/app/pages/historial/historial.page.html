@@ -1,39 +1,71 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/role-selection"></ion-back-button>
+    </ion-buttons>
     <ion-title>Historial</ion-title>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
-  <div class="container">
-    <div class="toggle-buttons">
-      <ion-button (click)="esConductor = true; cargarViajes()" color="danger" [fill]="esConductor ? 'solid' : 'outline'">Conductor</ion-button>
-      <ion-button (click)="esConductor = false; cargarViajes()" color="danger" [fill]="!esConductor ? 'solid' : 'outline'">Pasajero</ion-button>
+  <div class="buttons-container">
+    <ion-button (click)="mostrarConductor()" [color]="esConductor ? 'danger' : 'medium'" shape="round">Conductor</ion-button>
+    <ion-button (click)="mostrarPasajero()" [color]="!esConductor ? 'danger' : 'medium'" shape="round">Pasajero</ion-button>
+  </div>
+
+  <div *ngIf="esConductor">
+    <h2>Viajes como Conductor</h2>
+    <div *ngFor="let viaje of viajesConductor" class="viaje-card">
+      <h3>Viaje</h3>
+      <p><strong>Desde:</strong> {{ viaje.direccionPartida }}</p>
+      <p><strong>Hasta:</strong> {{ viaje.direccionDestino }}</p>
+      <p><strong>Precio:</strong> {{ viaje.precio ? '$' + viaje.precio : '$' }}</p>
+      <p><strong>Patente:</strong> {{ viaje.patente }}</p>
+      <p><strong>Fecha:</strong> {{ viaje.fechaViaje }}</p>
+      <div class="buttons-container">
+        <ion-button color="danger" (click)="verPasajeros(viaje.id)">Ver Pasajeros</ion-button>
+        <ion-button color="danger" (click)="verMapa(viaje.id)">Ver Mapa</ion-button>
+      </div>
     </div>
 
-    <div *ngFor="let viaje of viajesConductor">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Viaje</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <p><strong>Desde:</strong> {{ viaje.direccionPartida }}</p>
-          <p><strong>Hasta:</strong> {{ viaje.direccionDestino }}</p>
-          <p><strong>Precio:</strong> {{ viaje.precio | currency }}</p>
-          <p><strong>Patente:</strong> {{ viaje.patente }}</p>
-          <p><strong>Fecha:</strong> {{ viaje.fecha }}</p>
-          <ion-button color="danger" (click)="verPasajeros(viaje.id)">Ver Pasajeros</ion-button>
-          <ion-button color="medium" (click)="verMapa(viaje.id)">Ver Mapa</ion-button>
-        </ion-card-content>
-      </ion-card>
+    <div *ngIf="mostrarPasajeros">
+      <h3>Pasajeros del Viaje</h3>
+      <ion-list>
+        <ion-item *ngFor="let pasajero of pasajeros">
+          <ion-label>
+            
+            <p style="color: rgb(255, 255, 255); font-size: 1.2em;">{{ pasajero.correo || 'Correo del Pasajero' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-button (click)="ocultarPasajeros()">Ocultar Pasajeros</ion-button>
     </div>
 
     <div *ngIf="notificaciones.length > 0">
+      <h3>Notificaciones</h3>
       <ion-list>
-        <ion-item *ngFor="let notificacion of notificaciones" [style.color]="notificacion.color">
-          {{ notificacion.mensaje }}
+        <ion-item *ngFor="let notificacion of notificaciones">
+          <ion-label>{{ notificacion }}</ion-label>
         </ion-item>
       </ion-list>
+    </div>
+    <div *ngIf="notificaciones.length === 0">
+      <p>No hay notificaciones disponibles.</p>
+    </div>
+  </div>
+
+  <div *ngIf="!esConductor">
+    <h2>Viajes como Pasajero</h2>
+    <div *ngFor="let viaje of viajesPasajero" class="viaje-card">
+      <h3>Viaje</h3>
+      <p><strong>Desde:</strong> {{ viaje.direccionPartida }}</p>
+      <p><strong>Hasta:</strong> {{ viaje.direccionDestino }}</p>
+      <p><strong>Fecha:</strong> {{ viaje.fechaViaje }}</p>
+      <div class="buttons-container">
+        <ion-button color="danger" (click)="cancelarViaje(viaje.id)">Cancelar Viaje</ion-button>
+        <ion-button color="medium" fill="outline" (click)="verMapa(viaje.id)">Ver Mapa</ion-button>
+      </div>
     </div>
   </div>
 </ion-content>

@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AlertController, NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth'; // Asegúrate de importar la autenticación de Firebase
 
 interface Usuario {
-  username: string;
+  fullName: string;
   email: string;
-  telefono: string;
+  phoneNumber: string;
   fotoPerfilUrl: string | null;
 }
 
@@ -23,42 +21,31 @@ interface Usuario {
 })
 export class PerfilPage implements OnInit {
   usuario: Usuario = {
-    username: '',
+    fullName: '',
     email: '',
-    telefono: '',
+    phoneNumber: '',
     fotoPerfilUrl: null
   };
   imagenPerfil: string | null = null;
 
   constructor(
-    private router: Router,
-    private alertController: AlertController,
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
-    private storage: Storage
+    private storage: Storage,
+    private alertController: AlertController,
+    private navCtrl: NavController
   ) {}
 
   async ngOnInit() {
-    await this.storage.create(); // Inicializar Ionic Storage
-    await this.loadProfile(); // Cargar el perfil desde Ionic Storage
+    await this.storage.create();
+    this.loadProfile();
   }
 
-  // Función para cargar el perfil desde Firebase y almacenarlo en Ionic Storage
-  async loadProfile() {
-    const storedProfile = await this.storage.get('usuario');
-    if (storedProfile) {
-      this.usuario = storedProfile;
-      this.imagenPerfil = this.usuario.fotoPerfilUrl;
-    } else {
-      this.getUserProfileFromFirebase();
-    }
-  }
-
-  // Obtener el perfil desde Firebase y guardarlo en Ionic Storage
-  getUserProfileFromFirebase() {
+  loadProfile() {
     this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
+          // Obtener los datos del usuario actual desde Firestore usando su UID
           return this.firestore.collection('users').doc<Usuario>(user.uid).valueChanges();
         } else {
           return of(null);
@@ -67,15 +54,17 @@ export class PerfilPage implements OnInit {
     ).subscribe(async (data: Usuario | null | undefined) => {
       if (data) {
         this.usuario = {
-          username: data.username || '',
+          fullName: data.fullName || '',
           email: data.email || '',
-          telefono: data.telefono || '',
+          phoneNumber: data.phoneNumber || '',
           fotoPerfilUrl: data.fotoPerfilUrl || null
         };
         this.imagenPerfil = this.usuario.fotoPerfilUrl;
 
-        // Guardar los datos en Ionic Storage
+        // Guardar los datos en Ionic Storage para accesos futuros
         await this.storage.set('usuario', this.usuario);
+      } else {
+        console.error('No se pudo cargar la información del usuario');
       }
     });
   }
@@ -109,6 +98,63 @@ export class PerfilPage implements OnInit {
       this.usuario.fotoPerfilUrl = imagenDataUrl;
       await this.storage.set('usuario', this.usuario); // Guardar también en Ionic Storage
     }
+  }
+
+  // Editar perfil y guardar cambios en Firebase e Ionic Storage
+  async editarPerfil() {
+    const alert = await this.alertController.create({
+      header: 'Guardar Cambios',
+      inputs: [
+        {
+          name: 'fullName',
+          type: 'text',
+          placeholder: 'Nombre Completo',
+          value: this.usuario.fullName
+        },
+        {
+          name: 'email',
+          type: 'email',
+          placeholder: 'Correo Electrónico',
+          value: this.usuario.email
+        },
+        {
+          name: 'phoneNumber',
+          type: 'text',
+          placeholder: 'Teléfono',
+          value: this.usuario.phoneNumber
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Edición cancelada');
+          }
+        },
+        {
+          text: 'Guardar',
+          handler: async (data) => {
+            this.usuario.fullName = data.fullName;
+            this.usuario.email = data.email;
+            this.usuario.phoneNumber = data.phoneNumber;
+
+            const user = await this.afAuth.currentUser;
+            if (user) {
+              await this.firestore.collection('users').doc(user.uid).update({
+                fullName: data.fullName,
+                email: data.email,
+                phoneNumber: data.phoneNumber
+              });
+              await this.storage.set('usuario', this.usuario); // Guardar en Ionic Storage
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   // Cambiar la contraseña del usuario
@@ -164,10 +210,7 @@ export class PerfilPage implements OnInit {
       const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
   
       try {
-        // Reautenticación con la contraseña actual
         await user.reauthenticateWithCredential(credential);
-        
-        // Si la reautenticación es exitosa, actualiza la contraseña
         await user.updatePassword(newPassword);
   
         const successAlert = await this.alertController.create({
@@ -178,7 +221,6 @@ export class PerfilPage implements OnInit {
         await successAlert.present();
   
       } catch (error: any) {
-        // Verificar si el error es específicamente de contraseña incorrecta
         let errorMessage = 'La contraseña actual es incorrecta o no se pudo actualizar.';
         
         if (error.code === 'auth/wrong-password') {
@@ -194,68 +236,11 @@ export class PerfilPage implements OnInit {
       }
     }
   }
-  
-  // Editar perfil y guardar cambios en Firebase e Ionic Storage
-  async editarPerfil() {
-    const alert = await this.alertController.create({
-      header: 'Guardar Cambios',
-      inputs: [
-        {
-          name: 'username',
-          type: 'text',
-          placeholder: 'Nombre',
-          value: this.usuario.username
-        },
-        {
-          name: 'email',
-          type: 'email',
-          placeholder: 'Correo',
-          value: this.usuario.email
-        },
-        {
-          name: 'telefono',
-          type: 'text',
-          placeholder: 'Teléfono',
-          value: this.usuario.telefono
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Edición cancelada');
-          }
-        },
-        {
-          text: 'Guardar',
-          handler: async (data) => {
-            this.usuario.username = data.username;
-            this.usuario.email = data.email;
-            this.usuario.telefono = data.telefono;
-
-            const user = await this.afAuth.currentUser;
-            if (user) {
-              await this.firestore.collection('users').doc(user.uid).update({
-                username: data.username,
-                email: data.email,
-                telefono: data.telefono
-              });
-              await this.storage.set('usuario', this.usuario); // Guardar en Ionic Storage
-            }
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
 
   // Cerrar sesión
   cerrarSesion() {
     this.afAuth.signOut().then(() => {
-      this.router.navigate(['/home']);
+      this.navCtrl.navigateForward('/home');
     });
   }
 }

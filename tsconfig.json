@@ -8,6 +8,7 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
+    "types": ["mapbox-gl"],
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,

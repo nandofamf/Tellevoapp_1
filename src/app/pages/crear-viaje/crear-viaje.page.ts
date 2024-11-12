@@ -4,6 +4,7 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { GeocodingService } from '../../services/geocoding.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-crear-viaje',
@@ -19,16 +20,22 @@ export class CrearViajePage implements OnInit {
   patente: string = '';
   precioAsiento: number = 0;
   comentarios: string = '';
+  conductorId: string | null = null;
 
   constructor(
     private viajeDataService: ViajeDataService,
     private db: AngularFireDatabase,
     private router: Router,
     private toastController: ToastController,
-    private geocodingService: GeocodingService
+    private geocodingService: GeocodingService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.authService.getUserEmail().subscribe(email => {
+      this.conductorId = email;
+    });
+
     const viajeData = this.viajeDataService.getViajeData();
     if (viajeData) {
       this.direccionPartida = viajeData.direccionPartida;
@@ -46,29 +53,16 @@ export class CrearViajePage implements OnInit {
     }
   }
 
-  async mostrarToast(mensaje: string, color: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000,
-      color: color,
-      position: 'bottom',
-    });
-    await toast.present();
-  }
-
   guardarViajeEnFirebase() {
-    // Validar que al menos haya un asiento disponible
-    if (this.seats < 1) {
-      this.mostrarToast('Por favor, asegúrate de tener al menos un asiento disponible.', 'danger');
+    if (!this.conductorId) {
+      console.error('Conductor no autenticado');
       return;
     }
 
-    // Obtenemos las coordenadas de partida y destino
     this.geocodingService.getCoordinates(this.direccionPartida).subscribe(coordsPartida => {
       if (coordsPartida) {
         this.geocodingService.getCoordinates(this.direccionDestino).subscribe(coordsDestino => {
           if (coordsDestino) {
-            // Guardar el viaje en Firebase con coordenadas
             const viajeData = {
               direccionPartida: this.direccionPartida,
               direccionDestino: this.direccionDestino,
@@ -81,7 +75,8 @@ export class CrearViajePage implements OnInit {
               latPartida: coordsPartida[1],
               lngPartida: coordsPartida[0],
               latDestino: coordsDestino[1],
-              lngDestino: coordsDestino[0]
+              lngDestino: coordsDestino[0],
+              conductorId: this.conductorId
             };
 
             this.db.list('viajes').push(viajeData)
@@ -115,7 +110,16 @@ export class CrearViajePage implements OnInit {
       comentarios: this.comentarios,
     });
 
-    // Guarda el viaje en Firebase
     this.guardarViajeEnFirebase();
+  }
+
+  async mostrarToast(mensaje: string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      color: color,
+      position: 'bottom',
+    });
+    await toast.present();
   }
 }

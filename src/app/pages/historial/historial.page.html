@@ -1,22 +1,60 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Historial de Viajes</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/role-selection"></ion-back-button>
-    </ion-buttons>
+    <ion-title>Historial</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let viaje of viajes">
-    <ion-card-header>
-      <ion-card-title>Información del Viaje</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p><strong>Dirección de Partida:</strong> {{ viaje.direccionPartida.nombre }}</p>
-      <p><strong>Dirección de Destino:</strong> {{ viaje.direccionDestino.nombre }}</p>
-      <p><strong>Precio por Asiento:</strong> ${{ viaje.precioAsiento }}</p>
-      <p><strong>Asientos Disponibles:</strong> {{ viaje.asientosDisponibles }}</p>
-    </ion-card-content>
-  </ion-card>
+  <div class="button-container">
+    <ion-button shape="round" expand="full" color="danger" (click)="mostrarConductor()">Conductor</ion-button>
+    <ion-button shape="round" expand="full" color="danger" (click)="mostrarPasajero()">Pasajero</ion-button>
+  </div>
+
+  <ng-container *ngIf="viajesConductor.length > 0 && esConductor">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Viajes como Conductor</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let viaje of viajesConductor" lines="none">
+        <ion-label>
+          <h2>Desde:</h2>
+          <p class="viaje-info">{{ viaje.direccionPartida }}</p>
+          <h2>Hasta:</h2>
+          <p class="viaje-info">{{ viaje.direccionDestino }}</p>
+          <p>Precio: ${{ viaje.precioAsiento }}</p>
+          <p>Patente: {{ viaje.patente }}</p>
+          <p>Fecha: {{ viaje.fechaViaje }}</p>
+        </ion-label>
+        <div class="button-group">
+          <ion-button color="danger" (click)="verPasajeros(viaje.id)">Ver Pasajeros</ion-button>
+          <ion-button color="medium" (click)="verMapa(viaje.id)">Ver Mapa</ion-button>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+  <ng-container *ngIf="viajesPasajero.length > 0 && !esConductor">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Viajes como Pasajero</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let viaje of viajesPasajero" lines="none">
+        <ion-label>
+          <h2>Desde:</h2>
+          <p class="viaje-info">{{ viaje.direccionPartida }}</p>
+          <h2>Hasta:</h2>
+          <p class="viaje-info">{{ viaje.direccionDestino }}</p>
+          <p>Precio: ${{ viaje.precioAsiento }}</p>
+          <p>Patente: {{ viaje.patente }}</p>
+          <p>Fecha: {{ viaje.fechaViaje }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+  <ng-template #noViajes>
+    <ion-item>
+      <ion-label>No hay viajes disponibles.</ion-label>
+    </ion-item>
+  </ng-template>
 </ion-content>

@@ -1,6 +1,8 @@
+// auth.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +10,17 @@ import { Observable } from 'rxjs';
 export class AuthService {
   constructor(private afAuth: AngularFireAuth) {}
 
-  // Método para obtener el usuario actual (logged in user)
-  getUser(): Promise<any> {
-    return this.afAuth.authState.toPromise();
+  // Obtener el correo electrónico del usuario autenticado sin caracteres especiales
+  getUserEmail(): Observable<string | null> {
+    return this.afAuth.authState.pipe(
+      map(user => {
+        if (user && user.email) {
+          // Remueve caracteres especiales y convierte el correo a minúsculas
+          return user.email.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+        }
+        return null;
+      })
+    );
   }
 
   // Método para iniciar sesión con correo y contraseña
@@ -30,10 +40,6 @@ export class AuthService {
 
   // Método para verificar si hay un usuario autenticado
   isAuthenticated(): Observable<boolean> {
-    return new Observable<boolean>(observer => {
-      this.afAuth.authState.subscribe(user => {
-        observer.next(!!user);
-      });
-    });
+    return this.afAuth.authState.pipe(map(user => !!user));
   }
 }

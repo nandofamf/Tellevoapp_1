@@ -1,71 +1,56 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Configura tu viaje</ion-title>
+    <ion-title>Crear Viaje</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Detalles del Viaje</ion-card-title>
-    </ion-card-header>
+  <ion-item>
+    <ion-label position="stacked">Dirección de Partida</ion-label>
+    <ion-input [(ngModel)]="direccionPartida"></ion-input>
+  </ion-item>
 
-    <ion-card-content>
+  <ion-item>
+    <ion-label position="stacked">Dirección de Destino</ion-label>
+    <ion-input [(ngModel)]="direccionDestino"></ion-input>
+  </ion-item>
 
-      <!-- Asientos Disponibles -->
-      <ion-item>
-        <ion-label>Asientos Disponibles:</ion-label>
-        <ion-icon name="remove-circle" size="large" (click)="decrementSeats()" color="danger"></ion-icon>
-        <ion-label class="seat-count">{{ seats }}</ion-label>
-        <ion-icon name="add-circle" size="large" (click)="incrementSeats()" color="primary"></ion-icon>
-      </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Fecha del Viaje</ion-label>
+    <ion-datetime display-format="DD-MM-YYYY" [(ngModel)]="fechaViaje"></ion-datetime>
+  </ion-item>
 
-      <!-- Fecha del Viaje -->
-      <ion-item>
-        <ion-label>Fecha del Viaje:</ion-label>
-        <ion-datetime
-          display-format="DD-MM-YYYY"
-          [(ngModel)]="fechaViaje">
-        </ion-datetime>
-      </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Hora del Viaje</ion-label>
+    <ion-datetime display-format="HH:mm" [(ngModel)]="horaViaje"></ion-datetime>
+  </ion-item>
 
-      <!-- Patente del Automóvil -->
-      <ion-item>
-        <ion-label position="stacked">Patente del Automóvil:</ion-label>
-        <ion-input [(ngModel)]="patente" placeholder="Ingresa la patente"></ion-input>
-      </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Número de Asientos</ion-label>
+    <ion-buttons slot="end">
+      <ion-icon name="remove-circle" size="large" (click)="decrementSeats()" color="danger"></ion-icon>
+      <ion-note>{{ seats }}</ion-note>
+      <ion-icon name="add-circle" size="large" (click)="incrementSeats()" color="primary"></ion-icon>
+    </ion-buttons>
+  </ion-item>
 
-      <!-- Precio por Asiento -->
-      <ion-item>
-        <ion-label position="stacked">Precio por Asiento:</ion-label>
-        <ion-input type="number" [(ngModel)]="precioAsiento" placeholder="0"></ion-input>
-      </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Patente</ion-label>
+    <ion-input [(ngModel)]="patente"></ion-input>
+  </ion-item>
 
-      <!-- Comentarios Adicionales -->
-      <ion-item>
-        <ion-label position="stacked">Comentarios Adicionales:</ion-label>
-        <ion-textarea [(ngModel)]="comentarios" placeholder="Escribe comentarios..."></ion-textarea>
-      </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Precio por Asiento</ion-label>
+    <ion-input type="number" [(ngModel)]="precioAsiento"></ion-input>
+  </ion-item>
 
-      <!-- Mostrar Direcciones -->
-      <ion-item>
-        <ion-label position="stacked">Dirección de Partida:</ion-label>
-        <ion-text>{{ direccionPartida }}</ion-text>
-      </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Comentarios</ion-label>
+    <ion-textarea [(ngModel)]="comentarios"></ion-textarea>
+  </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Dirección de Destino:</ion-label>
-        <ion-text>{{ direccionDestino }}</ion-text>
-      </ion-item>
-
-    </ion-card-content>
-  </ion-card>
-
-  <!-- Botón para guardar el viaje -->
-  <ion-button expand="block" color="primary" (click)="guardarViaje()">
-    Guardar Viaje
-  </ion-button>
+  <ion-button expand="block" color="primary" (click)="guardarViaje()">Guardar Viaje</ion-button>
 </ion-content>

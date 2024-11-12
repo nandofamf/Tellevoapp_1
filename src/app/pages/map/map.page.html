@@ -16,7 +16,12 @@
       <p><strong>Dirección de Partida:</strong> {{ direccionPartida || 'No disponible' }}</p>
       <p><strong>Dirección de Destino:</strong> {{ direccionDestino || 'No disponible' }}</p>
       <p><strong>Precio por Asiento:</strong> ${{ precioAsiento || 'No disponible' }}</p>
+      <p><strong>Patente:</strong> {{ patente || 'No disponible' }}</p>
     </ion-card-content>
   </ion-card>
-  <div style="height: 100%; width: 100%;" id="map"></div>
+  
+  <div style="height: 500px; width: 100%;" id="map"></div>
+
+  <!-- Botón para cancelar viaje -->
+  <ion-button expand="full" color="danger" (click)="cancelarViaje()">Cancelar Viaje</ion-button>
 </ion-content>

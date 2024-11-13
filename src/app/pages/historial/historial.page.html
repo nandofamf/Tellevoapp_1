@@ -69,7 +69,7 @@
       <p><strong>Precio por Asiento:</strong> {{ viaje.precioAsiento ? '$' + viaje.precioAsiento : 'No disponible' }}</p>
       <div class="buttons-container">
         <ion-button color="danger" (click)="cancelarViaje(viaje.id)">Cancelar Viaje</ion-button>
-        <ion-button color="medium" fill="outline" (click)="verMapa(viaje.id)">Ver Mapa</ion-button>
+        <ion-button color="danger" (click)="verMapa(viaje.id)">Ver Mapa</ion-button>
       </div>
     </div>
   </div>

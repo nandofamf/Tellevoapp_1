@@ -42,7 +42,16 @@ export class HistorialPage implements OnInit, OnDestroy {
     }
   }
 
+  refrescarDatos() {
+    console.log("Refrescando datos...");
+    this.cargarViajes();
+  }
+
   cargarViajes() {
+    if (this.viajesSubscription) {
+      this.viajesSubscription.unsubscribe(); // Desinscribirse antes de volver a cargar para evitar múltiples suscripciones
+    }
+
     if (this.esConductor) {
       this.cargarViajesConductor();
     } else {
@@ -51,27 +60,35 @@ export class HistorialPage implements OnInit, OnDestroy {
   }
 
   cargarViajesConductor() {
-    this.viajesSubscription = this.db.list('viajes', ref => ref.orderByChild('idconductor').equalTo(this.usuarioId)).snapshotChanges().subscribe((changes) => {
-      this.viajesConductor = changes.map((c) => ({
-        id: c.payload.key,
-        ...(c.payload.val() as any),
-      }));
-      console.log("Viajes del conductor:", this.viajesConductor);
-    });
-  }
-  
-  cargarViajesPasajero() {
-    this.viajesSubscription = this.db.list('viajes').snapshotChanges().subscribe((changes) => {
-      this.viajesPasajero = changes
-        .map((c) => ({
+    this.viajesSubscription = this.db.list('viajes', ref => ref.orderByChild('idconductor').equalTo(this.usuarioId))
+      .snapshotChanges()
+      .subscribe((changes) => {
+        this.viajesConductor = changes.map((c) => ({
           id: c.payload.key,
           ...(c.payload.val() as any),
-        }))
-        .filter((viaje) => viaje.pasajeros && viaje.pasajeros[this.usuarioId]);  // Filtra por pasajero ID
-      console.log("Viajes del pasajero:", this.viajesPasajero);
-    });
+        }));
+        console.log("Viajes del conductor:", this.viajesConductor);
+      }, error => {
+        console.error("Error al cargar los viajes del conductor:", error);
+      });
   }
-  
+
+  cargarViajesPasajero() {
+    this.viajesSubscription = this.db.list('viajes')
+      .snapshotChanges()
+      .subscribe((changes) => {
+        this.viajesPasajero = changes
+          .map((c) => ({
+            id: c.payload.key,
+            ...(c.payload.val() as any),
+          }))
+          .filter((viaje) => viaje.pasajeros && viaje.pasajeros[this.usuarioId]);  // Filtra por pasajero ID
+        console.log("Viajes del pasajero:", this.viajesPasajero);
+      }, error => {
+        console.error("Error al cargar los viajes del pasajero:", error);
+      });
+  }
+
   mostrarConductor() {
     this.esConductor = true;
     this.cargarViajes();

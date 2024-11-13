@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,10 @@ export class ViajeDataService {
     direccionDestino: ''
   };
 
-  constructor() {}
+  constructor(private db: AngularFireDatabase) {
+    // Habilitar persistencia offline
+    this.db.database.goOnline();
+  }
 
   setDirecciones(partida: string, destino: string) {
     this.viajeData.direccionPartida = partida;

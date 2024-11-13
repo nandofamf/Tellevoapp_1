@@ -38,3 +38,45 @@
 
 @import "~leaflet/dist/leaflet.css";
 
+/* Fondo negro para toda la aplicación */
+body, ion-app, ion-content {
+  --ion-background-color: #000000; /* Fondo negro */
+  background-color: #000000 !important;
+  color: #ffffff; /* Texto blanco para mejor visibilidad */
+}
+
+/* Ajustes para ion-toolbar y ion-header para que coincidan con el fondo */
+ion-toolbar {
+  --background: #000000; /* Fondo negro */
+  --color: #ffffff; /* Texto blanco */
+}
+
+ion-header {
+  --ion-background-color: #000000; /* Fondo negro */
+}
+
+/* Ajustes para botones */
+ion-button {
+  --background: #444444; /* Fondo gris oscuro para destacar sobre el negro */
+  --color: #ffffff; /* Texto blanco */
+}
+
+/* Ajustes para ion-input y ion-item para mejorar la visibilidad */
+ion-item, ion-input, ion-textarea {
+  --background: #333333; /* Fondo gris oscuro */
+  --color: #ffffff; /* Texto blanco */
+}
+
+ion-list {
+  --ion-background-color: #ffffff; /* Fondo negro */
+}
+
+ion-label {
+  color: #ffffff; /* Texto blanco */
+}
+
+/* Estilos para calendario */
+ion-datetime {
+  --background: #333333; /* Fondo gris oscuro */
+  --color: #000000; /* Números en color negro */
+}

@@ -4,8 +4,14 @@
       <ion-back-button defaultHref="/role-selection"></ion-back-button>
     </ion-buttons>
     <ion-title>Historial</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="refrescarDatos()" color="primary">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content>
   <div class="buttons-container">
@@ -33,7 +39,7 @@
       <ion-list>
         <ion-item *ngFor="let pasajero of pasajeros">
           <ion-label>
-            <p style="color: rgb(0, 0, 0); font-size: 1.2em;">{{ pasajero.correo || 'Correo del Pasajero' }}</p>
+            <p style="color: rgb(255, 255, 255); font-size: 1.2em;">{{ pasajero.correo || 'Correo del Pasajero' }}</p>
           </ion-label>
         </ion-item>
       </ion-list>

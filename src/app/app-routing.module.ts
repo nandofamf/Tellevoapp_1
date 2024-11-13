@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'perfil', loadChildren: () => import('./pages/perfil/perfil.module').then(m => m.PerfilPageModule) },
   { path: 'register', loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterPageModule) },
   { path: 'historial', loadChildren: () => import('./pages/historial/historial.module').then(m => m.HistorialPageModule) },
-  { path: 'dashboard', loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardPageModule) },
+
   { path: 'map', loadChildren: () => import('./pages/map/map.module').then(m => m.MapPageModule) },
   { path: 'crear-viaje', loadChildren: () => import('./pages/crear-viaje/crear-viaje.module').then(m => m.CrearViajePageModule) }
 ];

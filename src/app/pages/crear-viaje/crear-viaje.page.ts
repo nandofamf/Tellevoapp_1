@@ -42,10 +42,13 @@ export class CrearViajePage implements OnInit {
       }
     });
 
+    // Obtener los datos del viaje (direcciones) desde el servicio ViajeDataService
     const viajeData = this.viajeDataService.getViajeData();
     if (viajeData) {
-      this.direccionPartida = viajeData.direccionPartida;
-      this.direccionDestino = viajeData.direccionDestino;
+      this.direccionPartida = viajeData.direccionPartida || '';
+      this.direccionDestino = viajeData.direccionDestino || '';
+    } else {
+      console.error("No se recibieron datos del viaje desde la página del conductor");
     }
   }
 
@@ -82,7 +85,7 @@ export class CrearViajePage implements OnInit {
               lngPartida: coordsPartida[0],
               latDestino: coordsDestino[1],
               lngDestino: coordsDestino[0],
-              idconductor: this.conductorId  // Utilizamos el formato consistente de idconductor
+              idconductor: this.conductorId
             };
 
             this.db.list('viajes').push(viajeData)

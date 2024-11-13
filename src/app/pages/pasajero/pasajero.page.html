@@ -16,8 +16,12 @@
         <p><strong>Hasta:</strong> {{ viaje.direccionDestino }}</p>
         <p><strong>Precio por Asiento:</strong> ${{ viaje.precioAsiento || 'No disponible' }}</p>
         <p><strong>Fecha:</strong> {{ viaje.fechaViaje }}</p>
+        <p><strong>Asientos Ocupados:</strong> {{ viaje.asientosOcupados }}</p>
+        <p><strong>Asientos Disponibles:</strong> {{ viaje.asientosDisponibles }}</p>
       </ion-label>
-      <ion-button slot="end" color="primary" (click)="tomarViaje(viaje.id)">Tomar Viaje</ion-button>
+      <ion-button slot="end" color="primary" [disabled]="viaje.asientosDisponibles === 0" (click)="tomarViaje(viaje.id)">
+        Tomar Viaje
+      </ion-button>
     </ion-item>
   </ion-list>
 

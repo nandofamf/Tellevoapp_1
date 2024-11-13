@@ -14,8 +14,8 @@ export class ConductorPage implements OnInit {
   map!: mapboxgl.Map;
   partidaCoords: [number, number] | null = null;
   destinoCoords: [number, number] | null = null;
-  direccionPartida: string = ''; // Sin valor predeterminado
-  direccionDestino: string = ''; // Sin valor predeterminado
+  direccionPartida: string = '';
+  direccionDestino: string = '';
   sugerenciasPartida: string[] = [];
   sugerenciasDestino: string[] = [];
 

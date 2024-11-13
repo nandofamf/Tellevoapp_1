@@ -11,6 +11,7 @@
     color: #ffffff;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 45%; /* Ajustar el ancho del botón */
 
     &.danger {
       background: linear-gradient(135deg, #e53935, #ff5722); /* Gradiente rojo */
@@ -24,7 +25,7 @@
 
 /* Estilo general para títulos de secciones */
 h2, h3 {
-  color: #ffffff;
+  color: #000000;
   font-weight: bold;
   font-size: 1.6rem;
   text-align: center;
@@ -74,7 +75,7 @@ h2, h3 {
   }
 
   p {
-    color: #b3b3b3;
+    color: #ffffff;
     margin: 0.3rem 0;
     font-size: 1.1rem;
     line-height: 1.4;
@@ -82,7 +83,7 @@ h2, h3 {
 
   .buttons-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top: 1rem;
 
     ion-button {
@@ -90,6 +91,7 @@ h2, h3 {
       padding: 0.4rem 1.2rem;
       border-radius: 8px;
       transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      width: 48%; /* Ajustar ancho de botones */
 
       &.danger {
         background: linear-gradient(135deg, #e53935, #ff7043); /* Gradiente rojo */
@@ -130,7 +132,7 @@ ion-list {
     color: #ffffff;
 
     ion-label p {
-      color: #ffffff;
+      color: #000000;
       font-size: 1.2rem;
     }
   }

@@ -8,19 +8,15 @@
 </ion-header>
 
 <ion-content>
+  <!-- Mostrar las direcciones que se pasaron desde la página del conductor -->
   <ion-item>
     <ion-label position="stacked">Dirección de Partida</ion-label>
-    <ion-input [(ngModel)]="direccionPartida"></ion-input>
+    <ion-input [(ngModel)]="direccionPartida" readonly></ion-input> <!-- Campo solo de lectura -->
   </ion-item>
 
   <ion-item>
     <ion-label position="stacked">Dirección de Destino</ion-label>
-    <ion-input [(ngModel)]="direccionDestino"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="stacked">Fecha del Viaje</ion-label>
-    <ion-datetime display-format="DD-MM-YYYY" [(ngModel)]="fechaViaje"></ion-datetime>
+    <ion-input [(ngModel)]="direccionDestino" readonly></ion-input> <!-- Campo solo de lectura -->
   </ion-item>
 
 

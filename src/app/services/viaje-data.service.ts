@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ViajeDataService {
-  private viajeData: any = null;
+  private viajeData: any = {
+    direccionPartida: '',
+    direccionDestino: ''
+  };
+
+  constructor() {}
+
+  setDirecciones(partida: string, destino: string) {
+    this.viajeData.direccionPartida = partida;
+    this.viajeData.direccionDestino = destino;
+  }
 
   setViajeData(data: any) {
-    this.viajeData = data;
+    this.viajeData = { ...this.viajeData, ...data };  // Fusiona la nueva data con la ya existente
   }
 
   getViajeData() {
     return this.viajeData;
   }
 
-  setDirecciones(direccionPartida: string, direccionDestino: string) {
+  clearData() {
     this.viajeData = {
-      ...this.viajeData,
-      direccionPartida: direccionPartida,
-      direccionDestino: direccionDestino
+      direccionPartida: '',
+      direccionDestino: ''
     };
-  }
-
-  clearViajeData() {
-    this.viajeData = null;
   }
 }

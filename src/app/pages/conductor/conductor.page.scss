@@ -7,10 +7,11 @@ ion-content {
 }
 
 #map {
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  height: 300px;
+  width: 100%;
+  border-radius: 10px;
   margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Añadida sombra para resaltar el mapa */
 }
 
 ion-item {
@@ -24,6 +25,7 @@ ion-item {
 
 ion-label {
   color: #00bcd4; /* Color celeste para el texto del label */
+  font-weight: bold;
 }
 
 ion-button {
@@ -31,6 +33,8 @@ ion-button {
   font-weight: bold;
   margin-top: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --background: #ff0000; /* Color rojo para el botón */
+  --background-activated: #ff4444; /* Color más claro cuando se presiona el botón */
 }
 
 /* Estilos para la lista de sugerencias */
@@ -40,17 +44,19 @@ ion-list {
 }
 
 ion-list ion-item {
-  --background: #444444; /* Fondo ligeramente más oscuro */
+  --background: #3e3e3e; /* Fondo gris oscuro más llamativo */
   color: white;
   border-radius: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   padding: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); /* Sombra suave */
-  transition: background 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease; /* Efecto de transición */
 }
 
 ion-list ion-item:hover {
   --background: #555555; /* Fondo más claro al pasar el ratón */
+  transform: translateY(-2px); /* Efecto sutil al pasar el ratón */
+  cursor: pointer;
 }
 
 ion-toolbar {
@@ -61,8 +67,27 @@ ion-toolbar {
 ion-title {
   font-size: 1.4em;
   color: #00bcd4;
+  font-weight: bold;
 }
 
 ion-icon {
   font-size: 1.3em;
+  color: #00bcd4;
+}
+
+/* Estilos para el botón de recarga */
+ion-buttons ion-button {
+  --color: #00bcd4; /* Icono de recarga en celeste */
+}
+
+/* Ajustes adicionales para hacer que la página sea más atractiva */
+ion-content > * {
+  margin-bottom: 12px;
+}
+
+@media (min-width: 768px) {
+  ion-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 }

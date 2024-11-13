@@ -2,76 +2,20 @@
 ion-content {
   --ion-background-color: transparent;
   background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
-<<<<<<< HEAD
-}
-
-/* Estilo específico para el ícono de refrescar */
-ion-icon[name="refresh"] {
-  color: #ffffff; /* Color negro */
-=======
   display: flex;
   justify-content: center;
   align-items: center;
   padding-top: 20px;
->>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 }
 
 /* Contenedor de la lista de viajes */
 ion-list {
-<<<<<<< HEAD
-  width: 100%;
-  max-width: 400px;
-=======
   width: 90%;
   max-width: 500px;
->>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
   margin: 0 auto;
   padding: 10px;
 }
 
-<<<<<<< HEAD
-/* Estilo de cada tarjeta de viaje */
-ion-card {
-  background: #4a4a4a; /* Fondo gris */
-  color: #ffffff;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
-  padding: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-ion-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
-}
-
-/* Estilo para el título y detalles de cada viaje */
-ion-card p {
-  font-size: 1rem;
-  color: #ffffff;
-  opacity: 0.8;
-  margin: 4px 0;
-}
-
-/* Botón de 'Tomar' */
-ion-button {
-  font-size: 1.2rem;
-  border-radius: 10px;
-  color: #fff;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-ion-button:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
-}
-
-ion-button:active {
-  transform: scale(0.96);
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
-=======
 /* Estilo de cada elemento de viaje */
 ion-item {
   background: #2c2c2c; /* Fondo oscuro para cada tarjeta de viaje */
@@ -134,7 +78,6 @@ ion-button {
     transform: scale(0.95);
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
   }
->>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 }
 
 /* Mensaje de 'No hay viajes disponibles' */
@@ -142,11 +85,7 @@ ion-button {
   display: flex;
   justify-content: center;
   align-items: center;
-<<<<<<< HEAD
-  font-size: 1.2rem;
-=======
   font-size: 1.1rem;
->>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
   color: #b0b0b0;
   height: 100%;
   text-align: center;
@@ -154,15 +93,12 @@ ion-button {
   opacity: 0.8;
 }
 
-<<<<<<< HEAD
-=======
 /* Estilo para el ícono de refrescar en el botón de recargar */
 ion-icon[name="refresh"] {
   color: #ffffff;
   font-size: 1.4rem;
 }
 
->>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 /* Estilos para la sección de asientos disponibles */
 .asientos-disponibles {
   display: flex;
@@ -171,11 +107,6 @@ ion-icon[name="refresh"] {
 }
 
 ion-icon {
-<<<<<<< HEAD
-  font-size: 1.2em;
-  color: var(--ion-color-dark);
-=======
   font-size: 1.1rem;
   color: #ff7043;
->>>>>>> bf7f1a98a0ce808b23e5be430f7927b46ab205ec
 }

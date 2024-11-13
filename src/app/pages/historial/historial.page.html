@@ -7,7 +7,6 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
   <div class="buttons-container">
     <ion-button (click)="mostrarConductor()" [color]="esConductor ? 'danger' : 'medium'" shape="round">Conductor</ion-button>
@@ -20,9 +19,9 @@
       <h3>Viaje</h3>
       <p><strong>Desde:</strong> {{ viaje.direccionPartida }}</p>
       <p><strong>Hasta:</strong> {{ viaje.direccionDestino }}</p>
-      <p><strong>Precio:</strong> {{ viaje.precio ? '$' + viaje.precio : '$' }}</p>
+      <p><strong>Asientos Disponibles:</strong> {{ viaje.asientosDisponibles }}</p>
+      <p><strong>Precio por Asiento:</strong> {{ viaje.precioAsiento ? '$' + viaje.precioAsiento : 'No disponible' }}</p>
       <p><strong>Patente:</strong> {{ viaje.patente }}</p>
-      <p><strong>Fecha:</strong> {{ viaje.fechaViaje }}</p>
       <div class="buttons-container">
         <ion-button color="danger" (click)="verPasajeros(viaje.id)">Ver Pasajeros</ion-button>
         <ion-button color="danger" (click)="verMapa(viaje.id)">Ver Mapa</ion-button>
@@ -34,8 +33,7 @@
       <ion-list>
         <ion-item *ngFor="let pasajero of pasajeros">
           <ion-label>
-            
-            <p style="color: rgb(255, 255, 255); font-size: 1.2em;">{{ pasajero.correo || 'Correo del Pasajero' }}</p>
+            <p style="color: rgb(0, 0, 0); font-size: 1.2em;">{{ pasajero.correo || 'Correo del Pasajero' }}</p>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -61,7 +59,8 @@
       <h3>Viaje</h3>
       <p><strong>Desde:</strong> {{ viaje.direccionPartida }}</p>
       <p><strong>Hasta:</strong> {{ viaje.direccionDestino }}</p>
-      <p><strong>Fecha:</strong> {{ viaje.fechaViaje }}</p>
+      <p><strong>Asientos Disponibles:</strong> {{ viaje.asientosDisponibles }}</p>
+      <p><strong>Precio por Asiento:</strong> {{ viaje.precioAsiento ? '$' + viaje.precioAsiento : 'No disponible' }}</p>
       <div class="buttons-container">
         <ion-button color="danger" (click)="cancelarViaje(viaje.id)">Cancelar Viaje</ion-button>
         <ion-button color="medium" fill="outline" (click)="verMapa(viaje.id)">Ver Mapa</ion-button>

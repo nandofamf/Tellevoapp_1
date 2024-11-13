@@ -49,10 +49,16 @@ export class PasajeroPage implements OnInit, OnDestroy {
 
   cargarViajesDisponibles() {
     this.viajesSubscription = this.db.list('viajes').snapshotChanges().subscribe((changes) => {
-      this.viajesDisponibles = changes.map((c) => ({
-        id: c.payload.key,
-        ...(c.payload.val() as any),
-      }));
+      this.viajesDisponibles = changes.map((c) => {
+        const viaje = c.payload.val() as any;
+        const pasajeros = viaje.pasajeros ? Object.keys(viaje.pasajeros).length : 0;
+        return {
+          id: c.payload.key,
+          asientosOcupados: pasajeros,
+          asientosDisponibles: viaje.asientosTotales - pasajeros,
+          ...viaje
+        };
+      });
       console.log("Viajes disponibles:", this.viajesDisponibles);
     });
   }

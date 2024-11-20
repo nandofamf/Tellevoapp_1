@@ -12,7 +12,6 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
   <div class="buttons-container">
     <ion-button (click)="mostrarConductor()" [color]="esConductor ? 'danger' : 'medium'" shape="round">Conductor</ion-button>
@@ -26,6 +25,7 @@
       <p><strong>Desde:</strong> {{ viaje.direccionPartida }}</p>
       <p><strong>Hasta:</strong> {{ viaje.direccionDestino }}</p>
       <p><strong>Asientos Disponibles:</strong> {{ viaje.asientosDisponibles }}</p>
+      <p><strong>Asientos Ocupados:</strong> {{ viaje.asientosOcupados }}</p>
       <p><strong>Precio por Asiento:</strong> {{ viaje.precioAsiento ? '$' + viaje.precioAsiento : 'No disponible' }}</p>
       <p><strong>Patente:</strong> {{ viaje.patente }}</p>
       <div class="buttons-container">

@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database'; // Importa el módulo de Realtime Database
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database'; // Realtime Database
 
 // HTTP Client Import
 import { HttpClientModule } from '@angular/common/http';
@@ -29,21 +29,21 @@ import { IonicStorageModule } from '@ionic/storage-angular';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
-    AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    AngularFireDatabaseModule, // Incluye AngularFireDatabaseModule
-    HttpClientModule,
-    IonicStorageModule.forRoot(),
+    IonicModule.forRoot(), // Configuración inicial de Ionic
+    AppRoutingModule, // Configuración de rutas de la aplicación
+    AngularFireModule.initializeApp(environment.firebaseConfig), // Inicializa Firebase
+    AngularFireAuthModule, // Módulo de autenticación de Firebase
+    AngularFirestoreModule, // Firestore
+    AngularFireDatabaseModule, // Realtime Database
+    HttpClientModule, // Cliente HTTP para solicitudes externas
+    IonicStorageModule.forRoot(), // Configuración de Ionic Storage
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    MapsService,
-    ViajeService,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, // Estrategia de reutilización de rutas
+    MapsService, // Servicio de mapas
+    ViajeService, // Servicio de viajes
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Añadido para solucionar errores de elementos desconocidos
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Resuelve errores con elementos desconocidos
 })
 export class AppModule {}

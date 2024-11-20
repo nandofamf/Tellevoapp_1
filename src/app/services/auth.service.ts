@@ -1,4 +1,3 @@
-// auth.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
@@ -43,5 +42,10 @@ export class AuthService {
   // Método para verificar si hay un usuario autenticado
   isAuthenticated(): Observable<boolean> {
     return this.afAuth.authState.pipe(map(user => !!user));
+  }
+
+  // Método para obtener el usuario actual (opcional)
+  getCurrentUser(): Promise<any> {
+    return this.afAuth.currentUser;
   }
 }

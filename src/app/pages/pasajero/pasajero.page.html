@@ -1,12 +1,16 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="dark">
+    <ion-title>Pasajero</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/role-selection"></ion-back-button>
     </ion-buttons>
-    <ion-title>Pasajero</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="ngOnInit()" color="primary">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <ion-list *ngIf="viajesDisponibles.length > 0">
     <ion-item *ngFor="let viaje of viajesDisponibles">
